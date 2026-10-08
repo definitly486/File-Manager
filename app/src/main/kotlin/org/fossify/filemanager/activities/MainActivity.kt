@@ -80,7 +80,7 @@ class MainActivity : SimpleActivity() {
     companion object {
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
-        private const val TOP_BAR_COLOR = 0xFF151515.toInt()
+        private const val TOP_BAR_COLOR = 0xFF201E21.toInt()
     }
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
@@ -95,6 +95,10 @@ class MainActivity : SimpleActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = TOP_BAR_COLOR
+        window.navigationBarColor = TOP_BAR_COLOR
+        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility and
+            android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         setContentView(binding.root)
         appLaunched(BuildConfig.APPLICATION_ID)
         setupOptionsMenu()
