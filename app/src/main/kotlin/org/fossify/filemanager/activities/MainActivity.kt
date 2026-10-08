@@ -278,7 +278,7 @@ class MainActivity : SimpleActivity() {
         binding.mainMenu.binding.apply {
             topToolbarSearchIcon.visibility = android.view.View.GONE
             topToolbarSearch.visibility = android.view.View.GONE
-            toolbarContainer.background = null
+            toolbarContainer.setBackgroundColor(0xFF212121.toInt())
 
             if (toolbarTitleView == null) {
                 val params = android.widget.RelativeLayout.LayoutParams(

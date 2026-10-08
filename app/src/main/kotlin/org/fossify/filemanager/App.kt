@@ -13,7 +13,7 @@ class App : FossifyApp() {
         applyCommanderTheme()
     }
 
-    // Fixed dark blue-gray look (Total Commander style, gray), independent of the system theme.
+    // Fixed dark charcoal look, independent of the system theme.
     private fun applyCommanderTheme() {
         baseConfig.apply {
             isSystemThemeEnabled = false
@@ -24,8 +24,8 @@ class App : FossifyApp() {
     }
 
     private companion object {
-        const val BACKGROUND_COLOR = 0xFF2A2E33.toInt()
+        const val BACKGROUND_COLOR = 0xFF1A1A1A.toInt()
         const val TEXT_COLOR = 0xFFFFFFFF.toInt()
-        const val PRIMARY_COLOR = 0xFF2A2E33.toInt()
+        const val PRIMARY_COLOR = 0xFF212121.toInt()
     }
 }
