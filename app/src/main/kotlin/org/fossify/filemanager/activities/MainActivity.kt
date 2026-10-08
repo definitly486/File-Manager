@@ -258,6 +258,8 @@ class MainActivity : SimpleActivity() {
             toolbar.setContentInsetsRelative(toolbar.contentInsetStart, 0)
             toolbar.setContentInsetEndWithActions(0)
             toolbar.setPadding(0, toolbar.paddingTop, 0, toolbar.paddingBottom)
+            // Overflow (⋮) menu background #312F32
+            toolbar.popupTheme = R.style.TcPopupMenuOverlay
             toggleHideOnScroll(false)
             setupMenu()
 
