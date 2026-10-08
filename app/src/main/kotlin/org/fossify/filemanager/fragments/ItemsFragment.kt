@@ -114,9 +114,13 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             return
         }
 
-        var realPath = path.trimEnd('/')
-        if (realPath.isEmpty()) {
-            realPath = "/"
+        // Virtual home screen must keep its exact path (://home)
+        val realPath = if (path == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+            path
+        } else {
+            var p = path.trimEnd('/')
+            if (p.isEmpty()) p = "/"
+            p
         }
 
         scrollStates[currentPath] = getScrollState()!!
@@ -128,15 +132,18 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 return@getItems
             }
 
-            FileDirItem.sorting = context!!.config.getFolderSorting(currentPath)
-            listItems.sort()
+            // Do not re-sort the fixed home screen order
+            if (currentPath != org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+                FileDirItem.sorting = context!!.config.getFolderSorting(currentPath)
+                listItems.sort()
 
-            if (context!!.config.getFolderViewType(currentPath) == VIEW_TYPE_GRID && listItems.none { it.isSectionTitle }) {
-                if (listItems.any { it.mIsDirectory } && listItems.any { !it.mIsDirectory }) {
-                    val firstFileIndex = listItems.indexOfFirst { !it.mIsDirectory }
-                    if (firstFileIndex != -1) {
-                        val sectionTitle = ListItem("", "", false, 0, 0, 0, false, true)
-                        listItems.add(firstFileIndex, sectionTitle)
+                if (context!!.config.getFolderViewType(currentPath) == VIEW_TYPE_GRID && listItems.none { it.isSectionTitle }) {
+                    if (listItems.any { it.mIsDirectory } && listItems.any { !it.mIsDirectory }) {
+                        val firstFileIndex = listItems.indexOfFirst { !it.mIsDirectory }
+                        if (firstFileIndex != -1) {
+                            val sectionTitle = ListItem("", "", false, 0, 0, 0, false, true)
+                            listItems.add(firstFileIndex, sectionTitle)
+                        }
                     }
                 }
             }
@@ -156,9 +163,17 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     private fun addItems(items: ArrayList<ListItem>, forceRefresh: Boolean = false) {
         activity?.runOnUiThread {
             binding.itemsSwipeRefresh.isRefreshing = false
-            binding.breadcrumbs.setBreadcrumb(currentPath)
-            binding.pathText.text = currentPath
-            binding.freeSpaceText.text = getFreeSpaceText(currentPath)
+            val isHome = currentPath == org.fossify.filemanager.helpers.HOME_SCREEN_PATH
+            if (isHome) {
+                binding.pathText.text = context!!.getString(R.string.home_screen_title)
+                binding.freeSpaceText.text = ""
+                binding.parentDirHolder.beGone()
+            } else {
+                binding.breadcrumbs.setBreadcrumb(currentPath)
+                binding.pathText.text = currentPath
+                binding.freeSpaceText.text = getFreeSpaceText(currentPath)
+                binding.parentDirHolder.beVisible()
+            }
             if (!forceRefresh && items.hashCode() == storedItems.hashCode()) {
                 return@runOnUiThread
             }
@@ -198,6 +213,13 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
 
     @SuppressLint("NewApi")
     private fun getItems(path: String, callback: (originalPath: String, items: ArrayList<ListItem>) -> Unit) {
+        if (path == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+            ensureBackgroundThread {
+                callback(path, buildHomeScreenItems())
+            }
+            return
+        }
+
         ensureBackgroundThread {
             if (activity?.isDestroyed == false && activity?.isFinishing == false) {
                 val config = context!!.config
@@ -304,10 +326,25 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     }
 
     private fun itemClicked(item: FileDirItem) {
-        if (item.isDirectory) {
-            openDirectory(item.path)
-        } else {
-            clickedPath(item.path)
+        when (item.path) {
+            "://internal" -> openDirectory(context!!.internalStoragePath)
+            "://user_location" -> {
+                StoragePickerDialog(activity as SimpleActivity, currentPath, context!!.config.enableRootAccess, true) {
+                    openPath(it)
+                }
+            }
+            "://bookmarks" -> {
+                activity?.startActivity(
+                    android.content.Intent(activity, org.fossify.filemanager.activities.FavoritesActivity::class.java)
+                )
+            }
+            else -> {
+                if (item.isDirectory) {
+                    openDirectory(item.path)
+                } else {
+                    clickedPath(item.path)
+                }
+            }
         }
     }
 
@@ -598,11 +635,126 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     }
 
     private fun goToHomeFolder() {
-        val homeFolder = context!!.config.homeFolder
-        if (homeFolder != currentPath) {
+        if (currentPath != org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
             getRecyclerAdapter()?.finishActMode()
-            openPath(homeFolder)
+            openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
         }
+    }
+
+    /**
+     * Builds the Total Commander–style home list:
+     * Internal storage, user location, Photos, Downloads, Root, Bookmarks, My apps.
+     */
+    private fun buildHomeScreenItems(): ArrayList<ListItem> {
+        val ctx = context ?: return ArrayList()
+        val items = ArrayList<ListItem>()
+        val internal = ctx.internalStoragePath
+
+        // 1. Internal shared storage — free/total encoded in size/modified for the home row UI
+        val internalFile = File(internal)
+        val freeSpace = internalFile.usableSpace.coerceAtLeast(0)
+        val totalSpace = internalFile.totalSpace.coerceAtLeast(0)
+        items.add(
+            ListItem(
+                mPath = "://internal",
+                mName = ctx.getString(R.string.internal_shared_storage),
+                mIsDirectory = true,
+                mChildren = 0,
+                mSize = freeSpace,
+                mModified = totalSpace,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        // 2. User-defined location (opens storage picker on click)
+        items.add(
+            ListItem(
+                mPath = "://user_location",
+                mName = ctx.getString(R.string.user_defined_location),
+                mIsDirectory = true,
+                mChildren = 0,
+                mSize = 0L,
+                mModified = 0L,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        // 3. Photos (DCIM)
+        val photosPath = "$internal/DCIM"
+        items.add(
+            ListItem(
+                mPath = photosPath,
+                mName = ctx.getString(R.string.photos),
+                mIsDirectory = true,
+                mChildren = 0,
+                mSize = 0L,
+                mModified = 0L,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        // 4. Downloads
+        val downloadsPath = "$internal/Download"
+        items.add(
+            ListItem(
+                mPath = downloadsPath,
+                mName = ctx.getString(R.string.downloads),
+                mIsDirectory = true,
+                mChildren = 0,
+                mSize = 0L,
+                mModified = 0L,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        // 5. Root folder
+        items.add(
+            ListItem(
+                mPath = "/",
+                mName = ctx.getString(R.string.root_folder),
+                mIsDirectory = true,
+                mChildren = 0,
+                mSize = 0L,
+                mModified = 0L,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        // 6. Bookmarks (favorites)
+        items.add(
+            ListItem(
+                mPath = "://bookmarks",
+                mName = ctx.getString(R.string.bookmarks),
+                mIsDirectory = true,
+                mChildren = 0,
+                mSize = 0L,
+                mModified = 0L,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        // 7. My apps
+        val appsPath = "$internal/Android/data"
+        items.add(
+            ListItem(
+                mPath = appsPath,
+                mName = ctx.getString(R.string.my_apps),
+                mIsDirectory = true,
+                mChildren = 0,
+                mSize = 0L,
+                mModified = 0L,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        return items
     }
 
     private fun getFreeSpaceText(path: String): String {

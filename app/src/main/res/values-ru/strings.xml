@@ -44,4 +44,14 @@
     <string name="total_storage">Полный объём: %s</string>
     <string name="enable_root_access">Включить root-доступ</string>
     <string name="press_back_twice">Двойное нажатие кнопки «Назад» для выхода из приложения</string>
+
+    <!-- Home screen (Total Commander style) -->
+    <string name="home_screen_title">Домой</string>
+    <string name="internal_shared_storage">Внутренний общий накопитель</string>
+    <string name="user_defined_location">Заданное пользователем расположение</string>
+    <string name="user_defined_location_hint">SD-карта, USB, …</string>
+    <string name="photos">Фото</string>
+    <string name="root_folder">Корневая папка</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="my_apps">Мои приложения</string>
 </resources>

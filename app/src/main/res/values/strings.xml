@@ -63,6 +63,16 @@
     <string name="new_file">New file</string>
     <string name="new_folder">New folder</string>
     <string name="swap_selection">Swap selection</string>
+
+    <!-- Home screen (Total Commander style) -->
+    <string name="home_screen_title">Home</string>
+    <string name="internal_shared_storage">Internal shared storage</string>
+    <string name="user_defined_location">User-defined location</string>
+    <string name="user_defined_location_hint">SD card, USB, …</string>
+    <string name="photos">Photos</string>
+    <string name="root_folder">Root folder</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="my_apps">My apps</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/FossifyOrg/Commons/tree/master/commons/src/main/res

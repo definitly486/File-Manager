@@ -1219,10 +1219,48 @@ class ItemsAdapter(
                 }
 
                 if (listItem.isDirectory) {
-                    itemIcon?.setImageDrawable(folderDrawable)
-                    itemDetails?.text = DIR_LABEL
-                    itemDate?.beVisible()
-                    itemDate?.text = formatCompactDate(listItem.modified)
+                    // Icons for Total Commander home-screen rows
+                    when {
+                        listItem.path == "://internal" || listItem.path == "://user_location" -> {
+                            val d = resources.getDrawable(R.drawable.ic_storage_vector, activity.theme).mutate()
+                            d.applyColorFilter(textColor)
+                            itemIcon?.setImageDrawable(d)
+                        }
+                        listItem.path.endsWith("/DCIM") ->
+                            itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_image, activity.theme))
+                        listItem.path.endsWith("/Download") ->
+                            itemIcon?.setImageDrawable(folderDrawable)
+                        listItem.path == "://bookmarks" -> {
+                            val d = resources.getDrawable(R.drawable.ic_home_vector, activity.theme).mutate()
+                            d.applyColorFilter(textColor)
+                            itemIcon?.setImageDrawable(d)
+                        }
+                        listItem.path.endsWith("/Android/data") ->
+                            itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_apps, activity.theme))
+                        else -> itemIcon?.setImageDrawable(folderDrawable)
+                    }
+                    // Total Commander home-screen special rows
+                    when (listItem.path) {
+                        "://internal" -> {
+                            val free = listItem.size.formatSize()
+                            val total = listItem.modified.formatSize()
+                            itemDetails?.text = "$free / $total"
+                            itemDate?.beGone()
+                        }
+                        "://user_location" -> {
+                            itemDetails?.text = activity.getString(R.string.user_defined_location_hint)
+                            itemDate?.beGone()
+                        }
+                        "://bookmarks" -> {
+                            itemDetails?.text = ""
+                            itemDate?.beGone()
+                        }
+                        else -> {
+                            itemDetails?.text = DIR_LABEL
+                            itemDate?.beVisible()
+                            itemDate?.text = formatCompactDate(listItem.modified)
+                        }
+                    }
                 } else {
                     itemDetails?.text = listItem.size.formatSize()
                     itemDate?.beVisible()

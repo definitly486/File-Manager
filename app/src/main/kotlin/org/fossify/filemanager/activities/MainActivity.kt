@@ -183,7 +183,8 @@ class MainActivity : SimpleActivity() {
             return true
         } else if (currentFragment is RecentsFragment || currentFragment is StorageFragment) {
             return false
-        } else if ((currentFragment as ItemsFragment).getBreadcrumbs().getItemCount() <= 1) {
+        } else if (currentFragment is ItemsFragment && currentFragment.currentPath == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+            // Already on home screen — exit (or require double back)
             if (!wasBackJustPressed && config.pressBackTwice) {
                 wasBackJustPressed = true
                 toast(R.string.press_back_again)
@@ -196,6 +197,10 @@ class MainActivity : SimpleActivity() {
                 finish()
                 return true
             }
+        } else if ((currentFragment as ItemsFragment).getBreadcrumbs().getItemCount() <= 1) {
+            // At volume root — go to home screen instead of exiting
+            openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
+            return true
         } else {
             currentFragment.getBreadcrumbs().removeBreadcrumb()
             openPath(currentFragment.getBreadcrumbs().getLastItem().path)
@@ -648,6 +653,12 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun openPath(path: String, forceRefresh: Boolean = false) {
+        // Virtual home screen path must not be rewritten to internal storage
+        if (path == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+            getItemsFragment()?.openPath(path, forceRefresh)
+            return
+        }
+
         var newPath = path
         val file = File(path)
         if (config.OTGPath.isNotEmpty() && config.OTGPath == path.trimEnd('/')) {
@@ -662,8 +673,9 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun goHome() {
-        if (config.homeFolder != getCurrentFragment()!!.currentPath) {
-            openPath(config.homeFolder)
+        val current = getCurrentFragment()?.currentPath
+        if (current != org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+            openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
         }
     }
 
