@@ -1264,16 +1264,16 @@ class ItemsAdapter(
                             itemDate?.beVisible()
                             itemDate?.text = ""
                             val refreshIcon = resources.getDrawable(R.drawable.tc_refresh_green, activity.theme).mutate()
-                            val size = (28 * activity.resources.displayMetrics.density).toInt()
+                            val size = (32 * activity.resources.displayMetrics.density).toInt()
                             refreshIcon.setBounds(0, 0, size, size)
                             itemDate?.setCompoundDrawables(null, null, refreshIcon, null)
-                            itemDate?.compoundDrawablePadding = 4
+                            itemDate?.compoundDrawablePadding = 6
                         }
                         listItem.path.endsWith("/DCIM") || listItem.path.endsWith("/Download") -> {
-                            // Photos / Downloads: path left-aligned under title, near icon
+                            // Photos / Downloads: path on the right (as in Total Commander)
                             itemName?.maxLines = 1
                             itemName?.ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
-                            itemDetails?.gravity = android.view.Gravity.START
+                            itemDetails?.gravity = android.view.Gravity.END
                             itemDetails?.text = listItem.path
                             itemDate?.beGone()
                             itemDate?.setCompoundDrawables(null, null, null, null)
