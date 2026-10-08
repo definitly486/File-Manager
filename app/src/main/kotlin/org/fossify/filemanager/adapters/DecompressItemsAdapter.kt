@@ -11,11 +11,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import org.fossify.commons.adapters.MyRecyclerViewAdapter
-import org.fossify.commons.extensions.getColoredDrawableWithColor
 import org.fossify.commons.extensions.getTextSize
 import org.fossify.commons.extensions.getTimeFormat
 import org.fossify.commons.helpers.getFilePlaceholderDrawables
 import org.fossify.commons.views.MyRecyclerView
+import org.fossify.filemanager.helpers.CommanderIcons
 import org.fossify.filemanager.R
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.databinding.ItemDecompressionListFileDirBinding
@@ -131,9 +131,10 @@ class DecompressItemsAdapter(activity: SimpleActivity, var listItems: MutableLis
     }
 
     private fun initDrawables() {
-        folderDrawable = resources.getColoredDrawableWithColor(R.drawable.ic_folder_vector, properPrimaryColor)
-        folderDrawable.alpha = 180
-        fileDrawable = resources.getDrawable(R.drawable.ic_file_generic)
-        fileDrawables = getFilePlaceholderDrawables(activity)
+        folderDrawable = resources.getDrawable(R.drawable.tc_folder)
+        fileDrawable = resources.getDrawable(R.drawable.tc_file)
+        fileDrawables = getFilePlaceholderDrawables(activity).also {
+            CommanderIcons.applyFileTypeIcons(activity, it)
+        }
     }
 }

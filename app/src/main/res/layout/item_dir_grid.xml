@@ -26,7 +26,7 @@
             android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
             android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_folder_vector" />
+            android:src="@drawable/tc_folder" />
 
         <TextView
             android:id="@+id/item_name"

@@ -57,7 +57,6 @@ import org.fossify.commons.extensions.formatDate
 import org.fossify.commons.extensions.formatSize
 import org.fossify.commons.extensions.getAndroidSAFFileItems
 import org.fossify.commons.extensions.getAndroidSAFUri
-import org.fossify.commons.extensions.getColoredDrawableWithColor
 import org.fossify.commons.extensions.getDefaultCopyDestinationPath
 import org.fossify.commons.extensions.getDocumentFile
 import org.fossify.commons.extensions.getDoesFilePathExist
@@ -106,6 +105,7 @@ import org.fossify.filemanager.extensions.setLastModified
 import org.fossify.filemanager.extensions.sharePaths
 import org.fossify.filemanager.extensions.toggleItemVisibility
 import org.fossify.filemanager.extensions.tryOpenPathIntent
+import org.fossify.filemanager.helpers.CommanderIcons
 import org.fossify.filemanager.helpers.OPEN_AS_AUDIO
 import org.fossify.filemanager.helpers.OPEN_AS_IMAGE
 import org.fossify.filemanager.helpers.OPEN_AS_OTHER
@@ -164,7 +164,6 @@ class ItemsAdapter(
         private const val TYPE_GRID_TYPE_DIVIDER = 4
         private const val SELECTION_CHECK_COLOR = 0xFF00C853.toInt()
         private const val DIR_LABEL = "<dir>"
-        private const val FOLDER_COLOR = 0xFFFFD600.toInt()
     }
 
     init {
@@ -1271,10 +1270,11 @@ class ItemsAdapter(
     }
 
     fun initDrawables() {
-        folderDrawable =
-            resources.getColoredDrawableWithColor(R.drawable.ic_folder_vector, FOLDER_COLOR)
-        fileDrawable = resources.getDrawable(R.drawable.ic_file_generic)
-        fileDrawables = getFilePlaceholderDrawables(activity)
+        folderDrawable = resources.getDrawable(R.drawable.tc_folder)
+        fileDrawable = resources.getDrawable(R.drawable.tc_file)
+        fileDrawables = getFilePlaceholderDrawables(activity).also {
+            CommanderIcons.applyFileTypeIcons(activity, it)
+        }
     }
 
     override fun onChange(position: Int): String {
