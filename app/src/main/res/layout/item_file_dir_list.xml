@@ -5,8 +5,8 @@
     android:id="@+id/item_frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/tiny_margin"
-    android:paddingBottom="@dimen/tiny_margin">
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_holder"
@@ -17,9 +17,9 @@
 
         <ImageView
             android:id="@+id/item_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="@dimen/small_margin"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="4dp"
             android:src="@drawable/tc_folder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,10 +27,10 @@
 
         <ImageView
             android:id="@+id/item_check"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:contentDescription="@null"
-            android:padding="@dimen/tiny_margin"
+            android:padding="2dp"
             android:src="@drawable/ic_check_vector"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/item_icon"
