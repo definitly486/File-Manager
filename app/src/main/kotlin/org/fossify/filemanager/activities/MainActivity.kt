@@ -241,7 +241,7 @@ class MainActivity : SimpleActivity() {
 
     /**
      * System Toolbar overflow often ignores popupTheme.
-     * Intercept the ⋮ button and show our own PopupMenu with background #201E21.
+     * Intercept the ⋮ button and show our own PopupMenu with background #312F32.
      */
     private fun installCustomOverflowMenu(toolbar: androidx.appcompat.widget.Toolbar) {
         fun findOverflowBtn(v: android.view.View): android.view.View? {

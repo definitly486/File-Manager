@@ -24,7 +24,7 @@
         <item name="popupMenuStyle">@style/TcPopupMenu</item>
         <item name="android:popupMenuStyle">@style/TcPopupMenu</item>
         <item name="actionOverflowMenuStyle">@style/TcOverflowMenu</item>
-        <item name="android:colorBackground">#201E21</item>
+        <item name="android:colorBackground">#312F32</item>
         <item name="android:panelBackground">@drawable/tc_popup_background</item>
         <item name="android:textColorPrimary">#FFFFFF</item>
         <item name="android:textColorSecondary">#B3FFFFFF</item>
