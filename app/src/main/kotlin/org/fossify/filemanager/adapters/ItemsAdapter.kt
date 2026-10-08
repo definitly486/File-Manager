@@ -54,6 +54,7 @@ import org.fossify.commons.extensions.deleteFile
 import org.fossify.commons.extensions.deleteFileBg
 import org.fossify.commons.extensions.deleteFolderBg
 import org.fossify.commons.extensions.formatSize
+import org.fossify.commons.extensions.internalStoragePath
 import org.fossify.commons.extensions.getAndroidSAFFileItems
 import org.fossify.commons.extensions.getAndroidSAFUri
 import org.fossify.commons.extensions.getDefaultCopyDestinationPath
@@ -1239,14 +1240,16 @@ class ItemsAdapter(
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_apps, activity.theme))
                         else -> itemIcon?.setImageDrawable(folderDrawable)
                     }
-                    // Home-screen rows (mChildren == -1): no "DIR", no date/time
+                    // Home-screen rows (mChildren == -1): paths instead of DIR / date-time
                     val isHomeRow = listItem.children == -1
                     when {
                         listItem.path == "://internal" -> {
+                            // Size under title, real path on the right (as in Total Commander)
                             val free = listItem.size.formatSize()
                             val total = listItem.modified.formatSize()
                             itemDetails?.text = "$free / $total"
-                            itemDate?.beGone()
+                            itemDate?.beVisible()
+                            itemDate?.text = activity.internalStoragePath
                             itemDate?.setCompoundDrawables(null, null, null, null)
                         }
                         listItem.path == "://user_location" -> {
@@ -1258,6 +1261,12 @@ class ItemsAdapter(
                             refreshIcon.setBounds(0, 0, refreshIcon.intrinsicWidth.coerceAtLeast(48), refreshIcon.intrinsicHeight.coerceAtLeast(48))
                             itemDate?.setCompoundDrawables(null, null, refreshIcon, null)
                             itemDate?.compoundDrawablePadding = 8
+                        }
+                        listItem.path.endsWith("/DCIM") || listItem.path.endsWith("/Download") -> {
+                            // Photos / Downloads: show full path instead of DIR and date
+                            itemDetails?.text = listItem.path
+                            itemDate?.beGone()
+                            itemDate?.setCompoundDrawables(null, null, null, null)
                         }
                         isHomeRow -> {
                             itemDetails?.text = ""
