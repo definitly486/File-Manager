@@ -516,7 +516,8 @@ class MainActivity : SimpleActivity() {
                 if (path != null) {
                     openPath(path)
                 } else {
-                    openPath(config.homeFolder)
+                    // Fallback: Total Commander–style home screen
+                    openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
                 }
             }
 
@@ -526,7 +527,8 @@ class MainActivity : SimpleActivity() {
 
             binding.mainViewPager.currentItem = 0
         } else {
-            openPath(config.homeFolder)
+            // Open Total Commander–style home screen on app start
+            openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
         }
 
         if (refreshRecents) {
