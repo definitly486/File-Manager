@@ -80,7 +80,11 @@ class MainActivity : SimpleActivity() {
     companion object {
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
-        private const val TOP_BAR_COLOR = 0xFF201E21.toInt()
+        // Matches the dark halo baked into total_commander_toolbar.png (~#151515),
+        // so the icon blends into the header with no visible edge.
+        private const val TOP_BAR_COLOR = 0xFF151515.toInt()
+        private const val NAV_BAR_COLOR = 0xFF201E21.toInt()
+        private const val STATUS_BAR_COLOR = 0xFF000000.toInt()
     }
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
@@ -95,11 +99,12 @@ class MainActivity : SimpleActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = TOP_BAR_COLOR
-        window.navigationBarColor = TOP_BAR_COLOR
+        window.statusBarColor = STATUS_BAR_COLOR
+        window.navigationBarColor = NAV_BAR_COLOR
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility and
             android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         setContentView(binding.root)
+        setupBlackStatusBar()
         appLaunched(BuildConfig.APPLICATION_ID)
         setupOptionsMenu()
         refreshMenuItems()
@@ -279,6 +284,45 @@ class MainActivity : SimpleActivity() {
         }
 
         hideSearchBar()
+    }
+
+    private var statusBarCover: android.view.View? = null
+
+    // With targetSdk 36 the app is drawn edge-to-edge and window.statusBarColor is ignored,
+    // so the area behind the system status bar shows whatever the layout paints there.
+    // A black view pinned to the top, exactly as tall as the status bar, forces it to be black.
+    private fun setupBlackStatusBar() {
+        androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = false
+
+        if (statusBarCover != null) return
+
+        val resId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        val fallbackHeight = if (resId > 0) resources.getDimensionPixelSize(resId) else 0
+
+        val cover = android.view.View(this).apply {
+            setBackgroundColor(STATUS_BAR_COLOR)
+            elevation = 100f * resources.displayMetrics.density
+            isClickable = false
+            isFocusable = false
+        }
+        binding.root.addView(
+            cover,
+            androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                fallbackHeight
+            ).apply { gravity = android.view.Gravity.TOP }
+        )
+        statusBarCover = cover
+
+        // Refine the height from the real window insets (cutouts, different devices)
+        binding.root.post {
+            val top = androidx.core.view.ViewCompat.getRootWindowInsets(binding.root)
+                ?.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())?.top
+            if (top != null && top > 0 && top != cover.layoutParams.height) {
+                cover.layoutParams = cover.layoutParams.apply { height = top }
+            }
+        }
     }
 
     private var toolbarTitleView: android.widget.TextView? = null
