@@ -237,9 +237,50 @@ class MainActivity : SimpleActivity() {
         }
     }
 
+
+    /** Apply #312F32 to the currently visible overflow/popup menu window. */
+    private fun tintVisiblePopupMenus() {
+        try {
+            val wmgClass = Class.forName("android.view.WindowManagerGlobal")
+            val getInstance = wmgClass.getMethod("getInstance")
+            val wmg = getInstance.invoke(null)
+            val mViewsField = wmgClass.getDeclaredField("mViews")
+            mViewsField.isAccessible = true
+            @Suppress("UNCHECKED_CAST")
+            val views = mViewsField.get(wmg) as List<android.view.View>
+            for (root in views) {
+                // Skip the activity content view
+                if (root === window.decorView) continue
+                // Popup roots are usually FrameLayout / PopupDecorView
+                root.setBackgroundColor(0xFF312F32.toInt())
+                root.background = getDrawable(R.drawable.tc_popup_background)
+                if (root is android.view.ViewGroup) {
+                    for (i in 0 until root.childCount) {
+                        val child = root.getChildAt(i)
+                        child.setBackgroundColor(0xFF312F32.toInt())
+                        // ListView inside menu
+                        if (child is android.widget.ListView) {
+                            child.setBackgroundColor(0xFF312F32.toInt())
+                            child.cacheColorHint = 0xFF312F32.toInt()
+                        }
+                        if (child is android.view.ViewGroup) {
+                            for (j in 0 until child.childCount) {
+                                child.getChildAt(j).setBackgroundColor(0xFF312F32.toInt())
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (_: Exception) {
+        }
+    }
+
     private fun setupOptionsMenu() {
         binding.mainMenu.apply {
-            requireToolbar().inflateMenu(R.menu.menu)
+            val toolbar = requireToolbar()
+            // Must set popupTheme before inflate + again after setupMenu (commons may reset it)
+            toolbar.popupTheme = R.style.TcPopupMenuOverlay
+            toolbar.inflateMenu(R.menu.menu)
             // Move the overflow (three-dots) button closer to the right edge
             // so it sits above the side arrows.
             // Commons MySearchMenu has paddingEnd on search_bar_container and
@@ -250,7 +291,6 @@ class MainActivity : SimpleActivity() {
                 0,
                 binding.searchBarContainer.paddingBottom
             )
-            val toolbar = requireToolbar()
             (toolbar.layoutParams as? android.widget.RelativeLayout.LayoutParams)?.let { lp ->
                 lp.marginEnd = 0
                 toolbar.layoutParams = lp
@@ -258,10 +298,50 @@ class MainActivity : SimpleActivity() {
             toolbar.setContentInsetsRelative(toolbar.contentInsetStart, 0)
             toolbar.setContentInsetEndWithActions(0)
             toolbar.setPadding(0, toolbar.paddingTop, 0, toolbar.paddingBottom)
-            // Overflow (⋮) menu background #312F32
-            toolbar.popupTheme = R.style.TcPopupMenuOverlay
             toggleHideOnScroll(false)
             setupMenu()
+            // Re-apply after setupMenu — ensures ⋮ overflow uses #312F32
+            toolbar.popupTheme = R.style.TcPopupMenuOverlay
+
+            toolbar.popupTheme = R.style.TcPopupMenuOverlay
+            // When ⋮ is tapped, tint the popup window to #312F32 (theme alone is unreliable)
+            toolbar.post {
+                val overflow = toolbar.findViewById<android.view.View>(androidx.appcompat.R.id.action_menu)
+                    ?: run {
+                        // Fallback: last child ImageView/ImageButton on toolbar
+                        var found: android.view.View? = null
+                        for (i in 0 until toolbar.childCount) {
+                            val c = toolbar.getChildAt(i)
+                            if (c is android.widget.ImageButton ||
+                                c.javaClass.simpleName.contains("Overflow", ignoreCase = true)
+                            ) {
+                                found = c
+                            }
+                        }
+                        found
+                    }
+                // Walk for ActionMenuView overflow button
+                fun findOverflowBtn(v: android.view.View): android.view.View? {
+                    if (v.javaClass.simpleName.contains("OverflowMenuButton", ignoreCase = true)) return v
+                    if (v is android.view.ViewGroup) {
+                        for (i in 0 until v.childCount) {
+                            findOverflowBtn(v.getChildAt(i))?.let { return it }
+                        }
+                    }
+                    return null
+                }
+                val btn = findOverflowBtn(toolbar)
+                btn?.setOnTouchListener { _, event ->
+                    if (event.action == android.view.MotionEvent.ACTION_UP) {
+                        toolbar.postDelayed({ tintVisiblePopupMenus() }, 50)
+                        toolbar.postDelayed({ tintVisiblePopupMenus() }, 120)
+                        toolbar.postDelayed({ tintVisiblePopupMenus() }, 250)
+                    }
+                    false // don't consume — let menu open
+                }
+            }
+
+
 
             onSearchClosedListener = {
                 getAllFragments().forEach {
