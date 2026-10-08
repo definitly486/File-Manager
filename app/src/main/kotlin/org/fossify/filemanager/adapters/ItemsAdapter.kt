@@ -1222,13 +1222,10 @@ class ItemsAdapter(
                     // Icons for Total Commander home-screen rows
                     when {
                         listItem.path == "://internal" ->
-                            // Blue SD-card icon like original Total Commander
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_sdcard, activity.theme))
-                        listItem.path == "://user_location" -> {
-                            val d = resources.getDrawable(R.drawable.ic_storage_vector, activity.theme).mutate()
-                            d.applyColorFilter(textColor)
-                            itemIcon?.setImageDrawable(d)
-                        }
+                        listItem.path == "://user_location" ->
+                            // Blue plus like original Total Commander
+                            itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_plus, activity.theme))
                         listItem.path.endsWith("/DCIM") ->
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_image, activity.theme))
                         listItem.path.endsWith("/Download") ->
@@ -1242,26 +1239,36 @@ class ItemsAdapter(
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_apps, activity.theme))
                         else -> itemIcon?.setImageDrawable(folderDrawable)
                     }
-                    // Total Commander home-screen special rows
-                    when (listItem.path) {
-                        "://internal" -> {
+                    // Home-screen rows (mChildren == -1): no "DIR", no date/time
+                    val isHomeRow = listItem.children == -1
+                    when {
+                        listItem.path == "://internal" -> {
                             val free = listItem.size.formatSize()
                             val total = listItem.modified.formatSize()
                             itemDetails?.text = "$free / $total"
                             itemDate?.beGone()
+                            itemDate?.setCompoundDrawables(null, null, null, null)
                         }
-                        "://user_location" -> {
+                        listItem.path == "://user_location" -> {
+                            // Hint under title + green refresh arrow on the right (TC style)
                             itemDetails?.text = activity.getString(R.string.user_defined_location_hint)
-                            itemDate?.beGone()
+                            itemDate?.beVisible()
+                            itemDate?.text = ""
+                            val refreshIcon = resources.getDrawable(R.drawable.tc_refresh_green, activity.theme)
+                            refreshIcon.setBounds(0, 0, refreshIcon.intrinsicWidth.coerceAtLeast(48), refreshIcon.intrinsicHeight.coerceAtLeast(48))
+                            itemDate?.setCompoundDrawables(null, null, refreshIcon, null)
+                            itemDate?.compoundDrawablePadding = 8
                         }
-                        "://bookmarks" -> {
+                        isHomeRow -> {
                             itemDetails?.text = ""
                             itemDate?.beGone()
+                            itemDate?.setCompoundDrawables(null, null, null, null)
                         }
                         else -> {
                             itemDetails?.text = DIR_LABEL
                             itemDate?.beVisible()
                             itemDate?.text = formatCompactDate(listItem.modified)
+                            itemDate?.setCompoundDrawables(null, null, null, null)
                         }
                     }
                 } else {

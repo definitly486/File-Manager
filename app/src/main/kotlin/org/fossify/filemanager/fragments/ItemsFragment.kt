@@ -168,11 +168,14 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 binding.pathText.text = context!!.getString(R.string.home_screen_title)
                 binding.freeSpaceText.text = ""
                 binding.parentDirHolder.beGone()
+                // Refresh lives on the "User-defined location" row (TC style), not in the header
+                binding.refreshButton.beGone()
             } else {
                 binding.breadcrumbs.setBreadcrumb(currentPath)
                 binding.pathText.text = currentPath
                 binding.freeSpaceText.text = getFreeSpaceText(currentPath)
                 binding.parentDirHolder.beVisible()
+                binding.refreshButton.beVisible()
             }
             if (!forceRefresh && items.hashCode() == storedItems.hashCode()) {
                 return@runOnUiThread
@@ -654,12 +657,13 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
         val internalFile = File(internal)
         val freeSpace = internalFile.usableSpace.coerceAtLeast(0)
         val totalSpace = internalFile.totalSpace.coerceAtLeast(0)
+        // mChildren = -1 marks home-screen rows (no DIR / no date-time in the list)
         items.add(
             ListItem(
                 mPath = "://internal",
                 mName = ctx.getString(R.string.internal_shared_storage),
                 mIsDirectory = true,
-                mChildren = 0,
+                mChildren = -1,
                 mSize = freeSpace,
                 mModified = totalSpace,
                 isSectionTitle = false,
@@ -667,13 +671,13 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             )
         )
 
-        // 2. User-defined location (opens storage picker on click)
+        // 2. User-defined location (opens storage picker; green refresh shown in adapter)
         items.add(
             ListItem(
                 mPath = "://user_location",
                 mName = ctx.getString(R.string.user_defined_location),
                 mIsDirectory = true,
-                mChildren = 0,
+                mChildren = -1,
                 mSize = 0L,
                 mModified = 0L,
                 isSectionTitle = false,
@@ -688,7 +692,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 mPath = photosPath,
                 mName = ctx.getString(R.string.photos),
                 mIsDirectory = true,
-                mChildren = 0,
+                mChildren = -1,
                 mSize = 0L,
                 mModified = 0L,
                 isSectionTitle = false,
@@ -703,7 +707,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 mPath = downloadsPath,
                 mName = ctx.getString(R.string.downloads),
                 mIsDirectory = true,
-                mChildren = 0,
+                mChildren = -1,
                 mSize = 0L,
                 mModified = 0L,
                 isSectionTitle = false,
@@ -717,7 +721,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 mPath = "/",
                 mName = ctx.getString(R.string.root_folder),
                 mIsDirectory = true,
-                mChildren = 0,
+                mChildren = -1,
                 mSize = 0L,
                 mModified = 0L,
                 isSectionTitle = false,
@@ -731,7 +735,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 mPath = "://bookmarks",
                 mName = ctx.getString(R.string.bookmarks),
                 mIsDirectory = true,
-                mChildren = 0,
+                mChildren = -1,
                 mSize = 0L,
                 mModified = 0L,
                 isSectionTitle = false,
@@ -746,7 +750,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 mPath = appsPath,
                 mName = ctx.getString(R.string.my_apps),
                 mIsDirectory = true,
-                mChildren = 0,
+                mChildren = -1,
                 mSize = 0L,
                 mModified = 0L,
                 isSectionTitle = false,
