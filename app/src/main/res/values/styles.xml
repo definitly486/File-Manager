@@ -6,4 +6,17 @@
         <item name="cornerSize">0dp</item>
     </style>
 
+    <!-- Popup / context menu background (item long-press actions) -->
+    <style name="TcPopupMenu" parent="@android:style/Widget.Material.PopupMenu">
+        <item name="android:popupBackground">@drawable/tc_popup_background</item>
+    </style>
+
+    <style name="TcPopupMenuOverlay" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="popupMenuStyle">@style/TcPopupMenu</item>
+        <item name="android:popupMenuStyle">@style/TcPopupMenu</item>
+        <item name="android:colorBackground">#312F32</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#B3FFFFFF</item>
+    </style>
+
 </resources>

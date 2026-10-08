@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.view.ContextThemeWrapper
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -376,7 +377,9 @@ class ItemsAdapter(
         }
 
         var actionChosen = false
-        val popup = PopupMenu(activity, holder.itemView)
+        // Dark TC-style popup background (#312F32)
+        val popupContext = ContextThemeWrapper(activity, R.style.TcPopupMenuOverlay)
+        val popup = PopupMenu(popupContext, holder.itemView, android.view.Gravity.END, 0, R.style.TcPopupMenu)
         popup.menuInflater.inflate(R.menu.cab, popup.menu)
         prepareActionMode(popup.menu)
         popup.setOnMenuItemClickListener { menuItem ->
@@ -396,6 +399,15 @@ class ItemsAdapter(
             }
         }
         popup.show()
+        // Ensure background color even if the theme is ignored on some devices
+        try {
+            val field = PopupMenu::class.java.getDeclaredField("mPopup")
+            field.isAccessible = true
+            val menuPopup = field.get(popup)
+            menuPopup?.javaClass?.getDeclaredMethod("setBackgroundDrawable", android.graphics.drawable.Drawable::class.java)
+                ?.invoke(menuPopup, activity.getDrawable(R.drawable.tc_popup_background))
+        } catch (_: Exception) {
+        }
     }
 
     override fun getItemCount() = listItems.size
