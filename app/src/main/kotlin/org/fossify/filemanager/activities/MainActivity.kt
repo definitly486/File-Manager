@@ -273,7 +273,8 @@ class MainActivity : SimpleActivity() {
 
     private var toolbarTitleView: android.widget.TextView? = null
 
-    // Title on the left, action icons on the right; the search field stays hidden
+    // Total Commander-style branding: a small app icon followed by the title.
+    // The action icons remain on the right, while the search field stays hidden
     // until the search icon is tapped.
     private fun hideSearchBar() {
         binding.mainMenu.binding.apply {
@@ -282,13 +283,34 @@ class MainActivity : SimpleActivity() {
             toolbarContainer.setBackgroundColor(TOP_BAR_COLOR)
 
             if (toolbarTitleView == null) {
+                val density = resources.displayMetrics.density
+                val iconSize = (32 * density).toInt()
+                val sidePadding = (8 * density).toInt()
+
+                val iconView = android.widget.ImageView(this@MainActivity).apply {
+                    id = android.view.View.generateViewId()
+                    layoutParams = android.widget.RelativeLayout.LayoutParams(
+                        iconSize,
+                        iconSize
+                    ).apply {
+                        addRule(android.widget.RelativeLayout.ALIGN_PARENT_START)
+                        addRule(android.widget.RelativeLayout.CENTER_VERTICAL)
+                        marginStart = sidePadding
+                    }
+                    setImageResource(R.drawable.total_commander_foreground)
+                    scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                    contentDescription = getString(R.string.app_name)
+                }
+                toolbarContainer.addView(iconView)
+
                 val params = android.widget.RelativeLayout.LayoutParams(
                     android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
                     android.view.ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    addRule(android.widget.RelativeLayout.ALIGN_PARENT_START)
                     addRule(android.widget.RelativeLayout.CENTER_VERTICAL)
+                    addRule(android.widget.RelativeLayout.END_OF, iconView.id)
                     addRule(android.widget.RelativeLayout.START_OF, topToolbar.id)
+                    marginStart = (4 * density).toInt()
                 }
 
                 val titleView = android.widget.TextView(this@MainActivity).apply {
@@ -298,7 +320,6 @@ class MainActivity : SimpleActivity() {
                     maxLines = 1
                     setTypeface(typeface, android.graphics.Typeface.BOLD)
                     setTextColor(config.textColor)
-                    setPadding((8 * resources.displayMetrics.density).toInt(), 0, 0, 0)
                 }
                 toolbarContainer.addView(titleView)
                 toolbarTitleView = titleView
