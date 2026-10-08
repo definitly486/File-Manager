@@ -235,6 +235,24 @@ class MainActivity : SimpleActivity() {
     private fun setupOptionsMenu() {
         binding.mainMenu.apply {
             requireToolbar().inflateMenu(R.menu.menu)
+            // Move the overflow (three-dots) button closer to the right edge
+            // so it sits above the side arrows.
+            // Commons MySearchMenu has paddingEnd on search_bar_container and
+            // layout_marginEnd on top_toolbar — both push the ⋮ away from the edge.
+            binding.searchBarContainer.setPadding(
+                binding.searchBarContainer.paddingStart,
+                binding.searchBarContainer.paddingTop,
+                0,
+                binding.searchBarContainer.paddingBottom
+            )
+            val toolbar = requireToolbar()
+            (toolbar.layoutParams as? android.widget.RelativeLayout.LayoutParams)?.let { lp ->
+                lp.marginEnd = 0
+                toolbar.layoutParams = lp
+            }
+            toolbar.setContentInsetsRelative(toolbar.contentInsetStart, 0)
+            toolbar.setContentInsetEndWithActions(0)
+            toolbar.setPadding(0, toolbar.paddingTop, 0, toolbar.paddingBottom)
             toggleHideOnScroll(false)
             setupMenu()
 
@@ -333,10 +351,26 @@ class MainActivity : SimpleActivity() {
         binding.mainMenu.binding.apply {
             // Force the entire top header, including the icon/title area, to #201E21.
             searchBarContainer.setBackgroundColor(TOP_BAR_COLOR)
+            // Remove right padding so the ⋮ sits at the edge (above the side arrows).
+            searchBarContainer.setPadding(
+                searchBarContainer.paddingStart,
+                searchBarContainer.paddingTop,
+                0,
+                searchBarContainer.paddingBottom
+            )
             topToolbarSearchIcon.visibility = android.view.View.GONE
             topToolbarSearch.visibility = android.view.View.GONE
             toolbarContainer.setBackgroundColor(TOP_BAR_COLOR)
             toolbarContainer.backgroundTintList = android.content.res.ColorStateList.valueOf(TOP_BAR_COLOR)
+
+            // Zero marginEnd on the toolbar itself (commons sets small_margin).
+            (topToolbar.layoutParams as? android.widget.RelativeLayout.LayoutParams)?.let { lp ->
+                lp.marginEnd = 0
+                topToolbar.layoutParams = lp
+            }
+            topToolbar.setContentInsetsRelative(topToolbar.contentInsetStart, 0)
+            topToolbar.setContentInsetEndWithActions(0)
+            topToolbar.setPadding(0, topToolbar.paddingTop, 0, topToolbar.paddingBottom)
 
             if (toolbarTitleView == null) {
                 val density = resources.displayMetrics.density
