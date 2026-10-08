@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Gestor de files</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="go_to_home_folder">Vader al dossier de initio</string>
     <string name="set_as_home_folder">Definir como dossier de initio</string>
     <string name="recents">Recente</string>

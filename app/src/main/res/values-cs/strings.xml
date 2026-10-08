@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Správce souborů</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="press_back_again">Stiskněte znovu zpět pro ukončení</string>
     <string name="go_to_home_folder">Přejít do domovské složky</string>
     <string name="set_as_home_folder">Nastavit jako domovskou složku</string>

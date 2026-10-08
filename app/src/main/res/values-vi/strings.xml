@@ -2,7 +2,7 @@
 <resources>
     <string name="images">Hình ảnh</string>
     <string name="home_folder_updated">Đã cập nhật thư mục chính</string>
-    <string name="app_launcher_name">Quản lý tệp</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="recents">Gần đây</string>
     <string name="path_copied">Đã sao chép đường dẫn</string>
     <string name="rooted_device_only">Thao tác này chỉ hiệu quả trên các thiết bị đã root</string>

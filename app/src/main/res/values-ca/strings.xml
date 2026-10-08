@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Gestor de fitxers</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="press_back_again">Premeu enrere de nou per a sortir</string>
     <string name="go_to_home_folder">Ves a la carpeta d\'inici</string>
     <string name="set_as_home_folder">Estableix com a carpeta d\'inici</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Dosieradministrilo</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="open_as">Malfermi kiel</string>
     <string name="text_file">Teksta dosiero</string>
     <string name="image_file">Bilda dosiero</string>

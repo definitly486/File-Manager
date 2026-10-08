@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Bainisteoir Comhad</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="go_to_home_folder">Téigh go dtí an fillteán baile</string>
     <string name="home_folder_updated">Nuashonraíodh an fillteán baile</string>
     <string name="copy_path">Cóipeáil cosán chuig an ngearrthaisce</string>

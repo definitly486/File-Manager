@@ -80,6 +80,7 @@ class MainActivity : SimpleActivity() {
     companion object {
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
+        private const val TOP_BAR_COLOR = 0xFF201E21.toInt()
     }
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
@@ -278,7 +279,7 @@ class MainActivity : SimpleActivity() {
         binding.mainMenu.binding.apply {
             topToolbarSearchIcon.visibility = android.view.View.GONE
             topToolbarSearch.visibility = android.view.View.GONE
-            toolbarContainer.setBackgroundColor(0xFF212121.toInt())
+            toolbarContainer.setBackgroundColor(TOP_BAR_COLOR)
 
             if (toolbarTitleView == null) {
                 val params = android.widget.RelativeLayout.LayoutParams(

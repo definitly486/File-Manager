@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Менеджер файлів</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="press_back_again">Для виходу натисніть «Назад» ще раз</string>
     <string name="go_to_home_folder">Перейти у домашню теку</string>
     <string name="set_as_home_folder">Встановити як головну теку</string>

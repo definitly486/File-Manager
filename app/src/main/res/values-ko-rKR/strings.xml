@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">파일 매니저</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="press_back_again">뒤로가기 버튼을 다시 누르면 종료됩니다</string>
     <string name="go_to_home_folder">홈 폴더 이동</string>
     <string name="set_as_home_folder">홈 폴더 설정</string>

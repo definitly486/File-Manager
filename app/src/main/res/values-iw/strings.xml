@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">מנהל הקבצים</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="press_back_again">ליציאה יש ללחוץ אחורה פעם נוספת</string>
     <string name="go_to_home_folder">מעבר לתיקיית הבית</string>
     <string name="set_as_home_folder">הגדר כתיקיית בית</string>

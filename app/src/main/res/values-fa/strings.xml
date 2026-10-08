@@ -2,7 +2,7 @@
 <resources>
     <string name="images">تصاویر</string>
     <string name="audio">صوت</string>
-    <string name="app_launcher_name">مدیریت فایل ها</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="press_back_again">برای خروج دوباره بازگشت را بزنید</string>
     <string name="go_to_home_folder">رفتن به پوشهٔ خانه</string>
     <string name="set_as_home_folder">تنظیم به عنوان پوشهٔ خانه</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">File Manager</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="invert_colors">Invert colours</string>
     <string name="audio">Audio</string>
     <string name="press_back_again">Press back again to exit</string>

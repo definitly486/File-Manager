@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_launcher_name">Failų tvarkytuvė</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="press_back_again">Dar kartą paspauskite atgal, kad išeitumėte</string>
     <string name="copy_path">Kopijuoti kelią į iškarpinę</string>
     <string name="path_copied">Kelias nukopijuotas</string>

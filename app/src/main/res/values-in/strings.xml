@@ -41,7 +41,7 @@
     <string name="press_back_twice">Wajib tekan tombol kembali dua kali untuk keluar aplikasi</string>
     <string name="audio">Audio</string>
     <string name="documents">Dokumen</string>
-    <string name="app_launcher_name">Pengelola File</string>
+    <string name="app_launcher_name">Total Commander</string>
     <string name="downloads">Unduhan</string>
     <string name="storage_free">bebas</string>
 </resources>
