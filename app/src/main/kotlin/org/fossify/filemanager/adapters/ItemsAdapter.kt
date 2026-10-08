@@ -1244,7 +1244,10 @@ class ItemsAdapter(
                     val isHomeRow = listItem.children == -1
                     when {
                         listItem.path == "://internal" -> {
-                            // Size under title, real path on the right (as in Total Commander)
+                            // Size under title (left, near icon), path on the right — TC style
+                            itemName?.maxLines = 1
+                            itemName?.ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
+                            itemDetails?.gravity = android.view.Gravity.START
                             val free = listItem.size.formatSize()
                             val total = listItem.modified.formatSize()
                             itemDetails?.text = "$free / $total"
@@ -1253,27 +1256,40 @@ class ItemsAdapter(
                             itemDate?.setCompoundDrawables(null, null, null, null)
                         }
                         listItem.path == "://user_location" -> {
-                            // Hint under title + green refresh arrow on the right (TC style)
+                            // Title can wrap like TC; hint left under title near icon; green refresh on the right
+                            itemName?.maxLines = 2
+                            itemName?.ellipsize = null
+                            itemDetails?.gravity = android.view.Gravity.START
                             itemDetails?.text = activity.getString(R.string.user_defined_location_hint)
                             itemDate?.beVisible()
                             itemDate?.text = ""
-                            val refreshIcon = resources.getDrawable(R.drawable.tc_refresh_green, activity.theme)
-                            refreshIcon.setBounds(0, 0, refreshIcon.intrinsicWidth.coerceAtLeast(48), refreshIcon.intrinsicHeight.coerceAtLeast(48))
+                            val refreshIcon = resources.getDrawable(R.drawable.tc_refresh_green, activity.theme).mutate()
+                            val size = (28 * activity.resources.displayMetrics.density).toInt()
+                            refreshIcon.setBounds(0, 0, size, size)
                             itemDate?.setCompoundDrawables(null, null, refreshIcon, null)
-                            itemDate?.compoundDrawablePadding = 8
+                            itemDate?.compoundDrawablePadding = 4
                         }
                         listItem.path.endsWith("/DCIM") || listItem.path.endsWith("/Download") -> {
-                            // Photos / Downloads: show full path instead of DIR and date
+                            // Photos / Downloads: path left-aligned under title, near icon
+                            itemName?.maxLines = 1
+                            itemName?.ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
+                            itemDetails?.gravity = android.view.Gravity.START
                             itemDetails?.text = listItem.path
                             itemDate?.beGone()
                             itemDate?.setCompoundDrawables(null, null, null, null)
                         }
                         isHomeRow -> {
+                            itemName?.maxLines = 1
+                            itemName?.ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
+                            itemDetails?.gravity = android.view.Gravity.START
                             itemDetails?.text = ""
                             itemDate?.beGone()
                             itemDate?.setCompoundDrawables(null, null, null, null)
                         }
                         else -> {
+                            itemName?.maxLines = 1
+                            itemName?.ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
+                            itemDetails?.gravity = android.view.Gravity.END
                             itemDetails?.text = DIR_LABEL
                             itemDate?.beVisible()
                             itemDate?.text = formatCompactDate(listItem.modified)

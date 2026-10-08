@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Total Commander–style green circular refresh arrow -->
+<!-- Vivid Total Commander–style green circular refresh -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
+    android:width="28dp"
+    android:height="28dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Green arc / circular arrow -->
+    <!-- Bright saturated green arrow -->
     <path
-        android:fillColor="#00C853"
+        android:fillColor="#00E676"
         android:pathData="M17.65,6.35
             C16.2,4.9 14.21,4 12,4
             c-4.42,0 -7.99,3.58 -7.99,8
@@ -23,4 +23,9 @@
             V4
             L17.65,6.35
             z" />
+    <!-- Slight highlight on the arrow tip for depth -->
+    <path
+        android:fillColor="#69F0AE"
+        android:fillAlpha="0.55"
+        android:pathData="M13,4 L20,4 L20,8 L16.5,6.2 Z" />
 </vector>
