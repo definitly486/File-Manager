@@ -1231,11 +1231,9 @@ class ItemsAdapter(
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_image, activity.theme))
                         listItem.path.endsWith("/Download") ->
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_download, activity.theme))
-                        listItem.path == "://bookmarks" -> {
-                            val d = resources.getDrawable(R.drawable.ic_home_vector, activity.theme).mutate()
-                            d.applyColorFilter(textColor)
-                            itemIcon?.setImageDrawable(d)
-                        }
+                        listItem.path == "://bookmarks" ->
+                            // Yellow folder + star like original Total Commander
+                            itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_bookmarks, activity.theme))
                         listItem.path.endsWith("/Android/data") ->
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_apps, activity.theme))
                         else -> itemIcon?.setImageDrawable(folderDrawable)
