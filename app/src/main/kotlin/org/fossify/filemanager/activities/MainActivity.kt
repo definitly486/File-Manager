@@ -284,8 +284,9 @@ class MainActivity : SimpleActivity() {
 
             if (toolbarTitleView == null) {
                 val density = resources.displayMetrics.density
-                val iconSize = (32 * density).toInt()
-                val sidePadding = (8 * density).toInt()
+                // Larger icon without adaptive-icon padding so no halo/transition is visible
+                val iconSize = (44 * density).toInt()
+                val sidePadding = (6 * density).toInt()
 
                 val iconView = android.widget.ImageView(this@MainActivity).apply {
                     id = android.view.View.generateViewId()
@@ -297,8 +298,10 @@ class MainActivity : SimpleActivity() {
                         addRule(android.widget.RelativeLayout.CENTER_VERTICAL)
                         marginStart = sidePadding
                     }
-                    setImageResource(R.drawable.total_commander_foreground)
+                    setImageResource(R.drawable.total_commander_toolbar)
                     scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                    setPadding(0, 0, 0, 0)
+                    adjustViewBounds = true
                     contentDescription = getString(R.string.app_name)
                 }
                 toolbarContainer.addView(iconView)
