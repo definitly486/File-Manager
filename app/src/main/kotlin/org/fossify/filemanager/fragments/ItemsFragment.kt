@@ -55,6 +55,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 breadcrumbs.listener = this@ItemsFragment
                 itemsSwipeRefresh.setOnRefreshListener { refreshFragment() }
                 parentDirHolder.setOnClickListener { goToParentFolder() }
+                homeButton.setOnClickListener { goToHomeFolder() }
                 refreshButton.setOnClickListener { refreshFragment() }
                 setupBottomBar()
                 setupSideButtons()
@@ -164,16 +165,18 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             binding.itemsSwipeRefresh.isRefreshing = false
             val isHome = currentPath == org.fossify.filemanager.helpers.HOME_SCREEN_PATH
             if (isHome) {
-                // No home icon / header actions row — list starts right away (TC style)
+                // Home page: no header actions (home icon hidden here only)
                 binding.pathText.text = ""
                 binding.freeSpaceText.text = ""
                 binding.itemsHeaderActions.beGone()
             } else {
+                // Folder pages: show parent / free space / home / refresh
                 binding.breadcrumbs.setBreadcrumb(currentPath)
                 binding.pathText.text = currentPath
                 binding.freeSpaceText.text = getFreeSpaceText(currentPath)
                 binding.itemsHeaderActions.beVisible()
                 binding.parentDirHolder.beVisible()
+                binding.homeButton.beVisible()
                 binding.refreshButton.beVisible()
             }
             if (!forceRefresh && items.hashCode() == storedItems.hashCode()) {
