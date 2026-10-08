@@ -1118,9 +1118,9 @@ class ItemsAdapter(
         fontSize = activity.getTextSize()
         smallerFontSize = fontSize * 0.8f
         // Total Commander-like compact captions
-        listNameFontSize = fontSize * 0.85f
-        gridNameFontSize = fontSize * 0.65f
-        detailsFontSize = fontSize * 0.62f
+        listNameFontSize = fontSize * 1.0f
+        gridNameFontSize = fontSize * 0.85f
+        detailsFontSize = fontSize * 0.8f
         notifyDataSetChanged()
     }
 
