@@ -2,7 +2,9 @@ package org.fossify.filemanager.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Parcelable
+import android.graphics.Color
 import android.util.AttributeSet
 import androidx.recyclerview.widget.GridLayoutManager
 import org.fossify.commons.activities.BaseSimpleActivity
@@ -474,6 +476,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     private fun updateBarColors(textColor: Int) {
         binding.apply {
             itemsBottomHolder.setBackgroundColor(context!!.getProperBackgroundColor())
+            itemsFab.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#312f32"))
             listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sideMove, sideOpen, sideSelectAll, sideInvert)
                 .forEach { it.setColorFilter(textColor) }
         }
