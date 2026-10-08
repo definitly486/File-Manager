@@ -80,7 +80,7 @@ class MainActivity : SimpleActivity() {
     companion object {
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
-        private const val TOP_BAR_COLOR = 0xFF201E21.toInt()
+        private const val TOP_BAR_COLOR = 0xFF151515.toInt()
     }
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
