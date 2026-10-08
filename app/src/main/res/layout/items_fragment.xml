@@ -27,6 +27,7 @@
             <LinearLayout
                 android:id="@+id/items_header"
                 android:layout_width="match_parent"
+                android:background="#312f32"
                 android:layout_toStartOf="@+id/items_side_buttons"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -62,6 +63,7 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:background="#312f32"
                     android:paddingStart="@dimen/small_margin"
                     android:paddingEnd="@dimen/small_margin">
 
@@ -75,8 +77,8 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:contentDescription="@null"
                             android:padding="0dp"
                             android:src="@drawable/tc_updir" />
@@ -110,6 +112,7 @@
                         android:id="@+id/refresh_button"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:layout_marginStart="12dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@null"
                         android:padding="0dp"

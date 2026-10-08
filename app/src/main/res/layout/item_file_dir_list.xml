@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/item_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:padding="@dimen/small_margin"
             android:src="@drawable/tc_folder"
             app:layout_constraintBottom_toBottomOf="parent"
