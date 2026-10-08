@@ -38,6 +38,8 @@
             android:paddingStart="@dimen/small_margin"
             android:paddingEnd="@dimen/small_margin"
             android:singleLine="true"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
             tools:text="Directory" />
 
         <ImageView
