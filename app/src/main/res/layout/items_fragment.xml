@@ -244,7 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:paddingBottom="56dp"
+                        android:paddingBottom="116dp"
                         android:layoutAnimation="@anim/layout_animation"
                         android:scrollbars="none"
                         app:layoutManager="org.fossify.commons.views.MyGridLayoutManager" />
@@ -260,6 +260,31 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#40FFFFFF" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp">
+
+                <org.fossify.commons.views.MyFloatingActionButton
+                    android:id="@+id/items_fab"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:src="@drawable/ic_plus_vector"
+                    app:elevation="0dp"
+                    app:pressedTranslationZ="0dp"
+                    app:shapeAppearanceOverlay="@style/SquareShape" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#40FFFFFF" />
 
             <LinearLayout
                 android:id="@+id/items_bottom_bar"
@@ -330,17 +355,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-        <org.fossify.commons.views.MyFloatingActionButton
-            android:id="@+id/items_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_marginStart="@dimen/activity_margin"
-            android:layout_marginTop="@dimen/activity_margin"
-            android:layout_marginEnd="@dimen/activity_margin"
-            android:layout_marginBottom="68dp"
-            android:src="@drawable/ic_plus_vector" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </org.fossify.filemanager.fragments.ItemsFragment>
