@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Total Commander–style internal storage (SD card) icon -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Card body (blue) -->
+    <path
+        android:fillColor="#1E88E5"
+        android:pathData="M10,8
+            L10,40
+            Q10,42 12,42
+            L36,42
+            Q38,42 38,40
+            L38,14
+            L32,8
+            Z" />
+
+    <!-- Slightly darker left edge for depth -->
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M10,8
+            L10,40
+            Q10,42 12,42
+            L14,42
+            L14,8
+            Z" />
+
+    <!-- Notch cut on top-right of card outline is already in body path -->
+
+    <!-- Gold contact pad background -->
+    <path
+        android:fillColor="#F9A825"
+        android:pathData="M14,8 L30,8 L30,16 L14,16 Z" />
+
+    <!-- Individual contact pins (darker gold / brown lines) -->
+    <path android:fillColor="#F57F17" android:pathData="M15.5,8 L17,8 L17,16 L15.5,16 Z" />
+    <path android:fillColor="#F57F17" android:pathData="M18.5,8 L20,8 L20,16 L18.5,16 Z" />
+    <path android:fillColor="#F57F17" android:pathData="M21.5,8 L23,8 L23,16 L21.5,16 Z" />
+    <path android:fillColor="#F57F17" android:pathData="M24.5,8 L26,8 L26,16 L24.5,16 Z" />
+    <path android:fillColor="#F57F17" android:pathData="M27.5,8 L29,8 L29,16 L27.5,16 Z" />
+
+    <!-- Write-protect slider (small white/gray notch on right) -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M34,20 L38,20 L38,26 L34,26 Z" />
+
+    <!-- Label lines on card body (subtle) -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:fillAlpha="0.5"
+        android:pathData="M16,22 L30,22 L30,24 L16,24 Z" />
+    <path
+        android:fillColor="#BBDEFB"
+        android:fillAlpha="0.35"
+        android:pathData="M16,27 L28,27 L28,29 L16,29 Z" />
+</vector>

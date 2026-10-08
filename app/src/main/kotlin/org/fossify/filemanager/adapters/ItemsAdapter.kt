@@ -1221,7 +1221,10 @@ class ItemsAdapter(
                 if (listItem.isDirectory) {
                     // Icons for Total Commander home-screen rows
                     when {
-                        listItem.path == "://internal" || listItem.path == "://user_location" -> {
+                        listItem.path == "://internal" ->
+                            // Blue SD-card icon like original Total Commander
+                            itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_sdcard, activity.theme))
+                        listItem.path == "://user_location" -> {
                             val d = resources.getDrawable(R.drawable.ic_storage_vector, activity.theme).mutate()
                             d.applyColorFilter(textColor)
                             itemIcon?.setImageDrawable(d)
