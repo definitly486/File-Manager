@@ -55,6 +55,8 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 parentDirHolder.setOnClickListener { goToParentFolder() }
                 homeButton.setOnClickListener { goToHomeFolder() }
                 refreshButton.setOnClickListener { refreshFragment() }
+                setupBottomBar()
+                setupSideButtons()
                 itemsFab.setOnClickListener {
                     if (isCreateDocumentIntent) {
                         (activity as MainActivity).createDocumentConfirmed(currentPath)
@@ -73,6 +75,8 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             updateTextColor(textColor)
             initDrawables()
         }
+
+        updateBarColors(textColor)
 
         binding.apply {
             val properPrimaryColor = context!!.getProperPrimaryColor()
@@ -428,8 +432,55 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
         }
     }
 
-    private fun createNewItem() {
-        CreateNewItemDialog(activity as SimpleActivity, currentPath) {
+    private fun setupBottomBar() {
+        binding.apply {
+            barMenu.setOnClickListener { (activity as? MainActivity)?.openOverflowMenu() }
+            barNewFile.setOnClickListener { createNewItem(false) }
+            barNewFolder.setOnClickListener { createNewItem(true) }
+            barDelete.setOnClickListener { withSelection { performAction(R.id.cab_delete) } }
+            barSort.setOnClickListener { (activity as? MainActivity)?.showSortingDialog() }
+            // swap: select everything that is not selected and deselect what is selected
+            barSwap.setOnClickListener { getRecyclerAdapter()?.invertSelection() }
+        }
+    }
+
+    private fun setupSideButtons() {
+        binding.apply {
+            sideCopy.setOnClickListener { withSelection { performAction(R.id.cab_copy_to) } }
+            sideMove.setOnClickListener { withSelection { performAction(R.id.cab_move_to) } }
+            sideOpen.setOnClickListener {
+                val dir = getRecyclerAdapter()?.getSingleSelectedDirectory()
+                if (dir != null) {
+                    getRecyclerAdapter()?.finishActMode()
+                    openDirectory(dir)
+                } else {
+                    activity?.toast(R.string.select_items_first)
+                }
+            }
+            sideSelectAll.setOnClickListener { getRecyclerAdapter()?.selectAllItems() }
+            sideInvert.setOnClickListener { getRecyclerAdapter()?.invertSelection() }
+        }
+    }
+
+    private fun withSelection(action: ItemsAdapter.() -> Unit) {
+        val adapter = getRecyclerAdapter()
+        if (adapter != null && adapter.hasSelection()) {
+            adapter.action()
+        } else {
+            activity?.toast(R.string.select_items_first)
+        }
+    }
+
+    private fun updateBarColors(textColor: Int) {
+        binding.apply {
+            itemsBottomBar.setBackgroundColor(context!!.getProperBackgroundColor())
+            listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sideMove, sideOpen, sideSelectAll, sideInvert)
+                .forEach { it.setColorFilter(textColor) }
+        }
+    }
+
+    private fun createNewItem(isDirectory: Boolean? = null) {
+        CreateNewItemDialog(activity as SimpleActivity, currentPath, isDirectory) {
             if (it) {
                 refreshFragment()
             } else {

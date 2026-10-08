@@ -11,10 +11,21 @@ import org.fossify.filemanager.helpers.RootHelpers
 import java.io.File
 import java.io.IOException
 
-class CreateNewItemDialog(val activity: SimpleActivity, val path: String, val callback: (success: Boolean) -> Unit) {
+class CreateNewItemDialog(
+    val activity: SimpleActivity,
+    val path: String,
+    val preselectDirectory: Boolean? = null,
+    val callback: (success: Boolean) -> Unit
+) {
     private val binding = DialogCreateNewBinding.inflate(activity.layoutInflater)
 
     init {
+        when (preselectDirectory) {
+            true -> binding.dialogRadioGroup.check(R.id.dialog_radio_directory)
+            false -> binding.dialogRadioGroup.check(R.id.dialog_radio_file)
+            null -> {}
+        }
+
         activity.getAlertDialogBuilder()
             .setPositiveButton(R.string.ok, null)
             .setNegativeButton(R.string.cancel, null)

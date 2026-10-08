@@ -26,6 +26,7 @@
             <LinearLayout
                 android:id="@+id/items_header"
                 android:layout_width="match_parent"
+                android:layout_toStartOf="@+id/items_side_buttons"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -123,6 +124,65 @@
                     android:background="#40FFFFFF" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/items_side_buttons"
+                android:layout_width="44dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="28dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/side_copy"
+                    android:layout_width="44dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/copy_to"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_side_arrow_vector" />
+
+                <ImageView
+                    android:id="@+id/side_move"
+                    android:layout_width="44dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/move_to"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_side_arrow_vector" />
+
+                <ImageView
+                    android:id="@+id/side_open"
+                    android:layout_width="44dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@null"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_side_arrow_vector" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+
+                <ImageView
+                    android:id="@+id/side_select_all"
+                    android:layout_width="44dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/select_all"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_side_equal_vector" />
+
+                <ImageView
+                    android:id="@+id/side_invert"
+                    android:layout_width="44dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/invert_selection"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_side_equal_vector" />
+            </LinearLayout>
+
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progress_bar"
                 android:layout_width="match_parent"
@@ -169,7 +229,8 @@
                 android:id="@+id/items_swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/items_header">
+                android:layout_below="@+id/items_header"
+                android:layout_toStartOf="@+id/items_side_buttons">
 
                 <com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
                     android:id="@+id/items_fastscroller"
@@ -182,6 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
+                        android:paddingBottom="56dp"
                         android:layoutAnimation="@anim/layout_animation"
                         android:scrollbars="none"
                         app:layoutManager="org.fossify.commons.views.MyGridLayoutManager" />
@@ -190,12 +252,83 @@
             </org.fossify.filemanager.views.MySwipeRefreshLayout>
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/items_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/bar_menu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/more_options"
+                android:padding="14dp"
+                android:src="@drawable/ic_bar_menu_vector" />
+
+            <ImageView
+                android:id="@+id/bar_new_file"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/new_file"
+                android:padding="14dp"
+                android:src="@drawable/ic_bar_new_file_vector" />
+
+            <ImageView
+                android:id="@+id/bar_new_folder"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/new_folder"
+                android:padding="14dp"
+                android:src="@drawable/ic_bar_new_folder_vector" />
+
+            <ImageView
+                android:id="@+id/bar_delete"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/delete"
+                android:padding="14dp"
+                android:src="@drawable/ic_bar_delete_vector" />
+
+            <ImageView
+                android:id="@+id/bar_sort"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/sort_by"
+                android:padding="14dp"
+                android:src="@drawable/ic_bar_sort_vector" />
+
+            <ImageView
+                android:id="@+id/bar_swap"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/swap_selection"
+                android:padding="14dp"
+                android:src="@drawable/ic_bar_swap_vector" />
+        </LinearLayout>
+
         <org.fossify.commons.views.MyFloatingActionButton
             android:id="@+id/items_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/activity_margin"
+            android:layout_marginStart="@dimen/activity_margin"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:layout_marginEnd="@dimen/activity_margin"
+            android:layout_marginBottom="68dp"
             android:src="@drawable/ic_plus_vector" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

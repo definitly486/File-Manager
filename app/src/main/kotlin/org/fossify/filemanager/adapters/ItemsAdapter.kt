@@ -219,6 +219,36 @@ class ItemsAdapter(
         }
     }
 
+    fun hasSelection() = selectedKeys.isNotEmpty()
+
+    fun performAction(id: Int) = actionItemPressed(id)
+
+    private fun ensureSelectionMode() {
+        if (!actModeCallback.isSelectable) {
+            activity.startActionMode(actModeCallback)
+        }
+    }
+
+    fun selectAllItems() {
+        ensureSelectionMode()
+        selectAll()
+    }
+
+    fun invertSelection() {
+        val positions = listItems.indices.filter { !listItems[it].isSectionTitle && !listItems[it].isGridTypeDivider }
+        if (positions.isEmpty()) return
+        ensureSelectionMode()
+        positions.forEachIndexed { index, pos ->
+            val key = listItems[pos].path.hashCode()
+            toggleItemSelection(!selectedKeys.contains(key), pos, index == positions.lastIndex)
+        }
+    }
+
+    fun getSingleSelectedDirectory(): String? {
+        if (selectedKeys.size != 1) return null
+        return getSelectedFileDirItems().firstOrNull()?.takeIf { it.isDirectory }?.path
+    }
+
     override fun getSelectableItemCount(): Int {
         return listItems.filter { !it.isSectionTitle && !it.isGridTypeDivider }.size
     }

@@ -56,6 +56,12 @@
     <!-- Settings -->
     <string name="enable_root_access">Enable root access</string>
     <string name="press_back_twice">Require pressing Back twice to leave the app</string>
+    <string name="select_items_first">Select files first</string>
+    <string name="invert_selection">Invert selection</string>
+    <string name="more_options">More</string>
+    <string name="new_file">New file</string>
+    <string name="new_folder">New folder</string>
+    <string name="swap_selection">Swap selection</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/FossifyOrg/Commons/tree/master/commons/src/main/res

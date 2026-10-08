@@ -536,7 +536,11 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    private fun showSortingDialog() {
+    fun openOverflowMenu() {
+        binding.mainMenu.requireToolbar().showOverflowMenu()
+    }
+
+    fun showSortingDialog() {
         ChangeSortingDialog(this, getCurrentFragment()!!.currentPath) {
             (getCurrentFragment() as? ItemsFragment)?.refreshFragment()
         }
