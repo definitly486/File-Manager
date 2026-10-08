@@ -238,40 +238,91 @@ class MainActivity : SimpleActivity() {
     }
 
 
-    /** Apply #312F32 to the currently visible overflow/popup menu window. */
-    private fun tintVisiblePopupMenus() {
-        try {
-            val wmgClass = Class.forName("android.view.WindowManagerGlobal")
-            val getInstance = wmgClass.getMethod("getInstance")
-            val wmg = getInstance.invoke(null)
-            val mViewsField = wmgClass.getDeclaredField("mViews")
-            mViewsField.isAccessible = true
-            @Suppress("UNCHECKED_CAST")
-            val views = mViewsField.get(wmg) as List<android.view.View>
-            for (root in views) {
-                // Skip the activity content view
-                if (root === window.decorView) continue
-                // Popup roots are usually FrameLayout / PopupDecorView
-                root.setBackgroundColor(0xFF312F32.toInt())
-                root.background = getDrawable(R.drawable.tc_popup_background)
-                if (root is android.view.ViewGroup) {
-                    for (i in 0 until root.childCount) {
-                        val child = root.getChildAt(i)
-                        child.setBackgroundColor(0xFF312F32.toInt())
-                        // ListView inside menu
-                        if (child is android.widget.ListView) {
-                            child.setBackgroundColor(0xFF312F32.toInt())
-                            child.cacheColorHint = 0xFF312F32.toInt()
-                        }
-                        if (child is android.view.ViewGroup) {
-                            for (j in 0 until child.childCount) {
-                                child.getChildAt(j).setBackgroundColor(0xFF312F32.toInt())
-                            }
-                        }
-                    }
+
+    /**
+     * System Toolbar overflow often ignores popupTheme.
+     * Intercept the ⋮ button and show our own PopupMenu with background #201E21.
+     */
+    private fun installCustomOverflowMenu(toolbar: androidx.appcompat.widget.Toolbar) {
+        fun findOverflowBtn(v: android.view.View): android.view.View? {
+            val name = v.javaClass.simpleName
+            if (name.contains("OverflowMenuButton", ignoreCase = true)) return v
+            if (v is android.widget.ImageButton &&
+                v.contentDescription?.toString()?.contains("More", ignoreCase = true) == true
+            ) {
+                return v
+            }
+            if (v is android.view.ViewGroup) {
+                for (i in 0 until v.childCount) {
+                    findOverflowBtn(v.getChildAt(i))?.let { return it }
                 }
             }
-        } catch (_: Exception) {
+            return null
+        }
+        val btn = findOverflowBtn(toolbar) ?: return
+        btn.setOnClickListener {
+            refreshMenuItems()
+            val wrapper = android.view.ContextThemeWrapper(this, R.style.TcPopupMenuOverlay)
+            val popup = android.widget.PopupMenu(wrapper, btn, android.view.Gravity.END, 0, R.style.TcOverflowMenu)
+            popup.menuInflater.inflate(R.menu.menu, popup.menu)
+            val src = toolbar.menu
+            for (i in 0 until popup.menu.size()) {
+                val item = popup.menu.getItem(i)
+                val srcItem = src.findItem(item.itemId)
+                if (srcItem != null) {
+                    item.isVisible = srcItem.isVisible
+                    item.isEnabled = srcItem.isEnabled
+                }
+                // Items already on the action bar should not repeat in overflow
+                if (item.itemId == R.id.search || item.itemId == R.id.exit_app ||
+                    item.itemId == R.id.go_home || item.itemId == R.id.go_to_favorite
+                ) {
+                    item.isVisible = false
+                }
+            }
+            popup.setOnMenuItemClickListener { menuItem ->
+                if (menuItem.itemId == R.id.exit_app) {
+                    finishAndRemoveTask()
+                    return@setOnMenuItemClickListener true
+                }
+                if (getCurrentFragment() == null) return@setOnMenuItemClickListener true
+                when (menuItem.itemId) {
+                    R.id.search -> openSearchField()
+                    R.id.go_home -> goHome()
+                    R.id.go_to_favorite -> goToFavorite()
+                    R.id.sort -> showSortingDialog()
+                    R.id.add_favorite -> addFavorite()
+                    R.id.remove_favorite -> removeFavorite()
+                    R.id.toggle_filename -> toggleFilenameVisibility()
+                    R.id.set_as_home -> setAsHome()
+                    R.id.change_view_type -> changeViewType()
+                    R.id.temporarily_show_hidden -> tryToggleTemporarilyShowHidden()
+                    R.id.stop_showing_hidden -> tryToggleTemporarilyShowHidden()
+                    R.id.column_count -> changeColumnCount()
+                    R.id.more_apps_from_us -> launchMoreAppsFromUsIntent()
+                    R.id.settings -> launchSettings()
+                    R.id.about -> launchAbout()
+                    else -> return@setOnMenuItemClickListener false
+                }
+                true
+            }
+            popup.show()
+            try {
+                val popupField = android.widget.PopupMenu::class.java.getDeclaredField("mPopup")
+                popupField.isAccessible = true
+                val helper = popupField.get(popup) ?: return@setOnClickListener
+                val bg = getDrawable(R.drawable.tc_popup_background)
+                helper.javaClass.methods
+                    .firstOrNull { it.name == "setBackgroundDrawable" && it.parameterTypes.size == 1 }
+                    ?.invoke(helper, bg)
+                val getPopup = helper.javaClass.methods
+                    .firstOrNull { it.name == "getPopup" && it.parameterTypes.isEmpty() }
+                val listPopup = getPopup?.invoke(helper)
+                listPopup?.javaClass?.methods
+                    ?.firstOrNull { it.name == "setBackgroundDrawable" && it.parameterTypes.size == 1 }
+                    ?.invoke(listPopup, bg)
+            } catch (_: Exception) {
+            }
         }
     }
 
@@ -300,47 +351,8 @@ class MainActivity : SimpleActivity() {
             toolbar.setPadding(0, toolbar.paddingTop, 0, toolbar.paddingBottom)
             toggleHideOnScroll(false)
             setupMenu()
-            // Re-apply after setupMenu — ensures ⋮ overflow uses #312F32
             toolbar.popupTheme = R.style.TcPopupMenuOverlay
-
-            toolbar.popupTheme = R.style.TcPopupMenuOverlay
-            // When ⋮ is tapped, tint the popup window to #312F32 (theme alone is unreliable)
-            toolbar.post {
-                val overflow = toolbar.findViewById<android.view.View>(androidx.appcompat.R.id.action_menu)
-                    ?: run {
-                        // Fallback: last child ImageView/ImageButton on toolbar
-                        var found: android.view.View? = null
-                        for (i in 0 until toolbar.childCount) {
-                            val c = toolbar.getChildAt(i)
-                            if (c is android.widget.ImageButton ||
-                                c.javaClass.simpleName.contains("Overflow", ignoreCase = true)
-                            ) {
-                                found = c
-                            }
-                        }
-                        found
-                    }
-                // Walk for ActionMenuView overflow button
-                fun findOverflowBtn(v: android.view.View): android.view.View? {
-                    if (v.javaClass.simpleName.contains("OverflowMenuButton", ignoreCase = true)) return v
-                    if (v is android.view.ViewGroup) {
-                        for (i in 0 until v.childCount) {
-                            findOverflowBtn(v.getChildAt(i))?.let { return it }
-                        }
-                    }
-                    return null
-                }
-                val btn = findOverflowBtn(toolbar)
-                btn?.setOnTouchListener { _, event ->
-                    if (event.action == android.view.MotionEvent.ACTION_UP) {
-                        toolbar.postDelayed({ tintVisiblePopupMenus() }, 50)
-                        toolbar.postDelayed({ tintVisiblePopupMenus() }, 120)
-                        toolbar.postDelayed({ tintVisiblePopupMenus() }, 250)
-                    }
-                    false // don't consume — let menu open
-                }
-            }
-
+            toolbar.post { installCustomOverflowMenu(toolbar) }
 
 
             onSearchClosedListener = {
