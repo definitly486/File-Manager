@@ -81,7 +81,7 @@ class MainActivity : SimpleActivity() {
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
         // Header color #1f1e1f (RGB 31, 30, 31)
-        private const val TOP_BAR_COLOR =   0xFF201E21.toInt()
+        private const val TOP_BAR_COLOR =     0xFF201E21.toInt()
         private const val NAV_BAR_COLOR = 0xFF201E21.toInt()
         private const val STATUS_BAR_COLOR = 0xFF000000.toInt()
     }
@@ -331,9 +331,12 @@ class MainActivity : SimpleActivity() {
     // until the search icon is tapped.
     private fun hideSearchBar() {
         binding.mainMenu.binding.apply {
+            // Force the entire top header, including the icon/title area, to #201E21.
+            searchBarContainer.setBackgroundColor(TOP_BAR_COLOR)
             topToolbarSearchIcon.visibility = android.view.View.GONE
             topToolbarSearch.visibility = android.view.View.GONE
             toolbarContainer.setBackgroundColor(TOP_BAR_COLOR)
+            toolbarContainer.backgroundTintList = android.content.res.ColorStateList.valueOf(TOP_BAR_COLOR)
 
             if (toolbarTitleView == null) {
                 val density = resources.displayMetrics.density
@@ -424,9 +427,13 @@ class MainActivity : SimpleActivity() {
 
     private fun updateMenuColors() {
         binding.mainMenu.updateColors()
-        // MySearchMenu reapplies its theme colors here, so force the Total Commander-style
-        // top header color after the library has finished updating its toolbar colors.
+        // MySearchMenu reapplies its theme colors here. Force every layer of the
+        // top header, including the icon/title area, to #201E21.
+        binding.mainMenu.setBackgroundColor(TOP_BAR_COLOR)
+        binding.mainMenu.binding.searchBarContainer.setBackgroundColor(TOP_BAR_COLOR)
         binding.mainMenu.binding.toolbarContainer.setBackgroundColor(TOP_BAR_COLOR)
+        binding.mainMenu.binding.toolbarContainer.backgroundTintList =
+            android.content.res.ColorStateList.valueOf(TOP_BAR_COLOR)
         binding.mainMenu.requireToolbar().setBackgroundColor(TOP_BAR_COLOR)
     }
 
