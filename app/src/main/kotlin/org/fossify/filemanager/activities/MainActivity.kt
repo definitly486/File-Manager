@@ -81,7 +81,7 @@ class MainActivity : SimpleActivity() {
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
         // Header color #1f1e1f (RGB 31, 30, 31)
-        private const val TOP_BAR_COLOR = 0xFFFF0000.toInt()
+        private const val TOP_BAR_COLOR =   0xFF201E21.toInt()
         private const val NAV_BAR_COLOR = 0xFF201E21.toInt()
         private const val STATUS_BAR_COLOR = 0xFF000000.toInt()
     }
@@ -424,6 +424,10 @@ class MainActivity : SimpleActivity() {
 
     private fun updateMenuColors() {
         binding.mainMenu.updateColors()
+        // MySearchMenu reapplies its theme colors here, so force the Total Commander-style
+        // top header color after the library has finished updating its toolbar colors.
+        binding.mainMenu.binding.toolbarContainer.setBackgroundColor(TOP_BAR_COLOR)
+        binding.mainMenu.requireToolbar().setBackgroundColor(TOP_BAR_COLOR)
     }
 
     private fun storeStateVariables() {
