@@ -342,7 +342,7 @@ class MainActivity : SimpleActivity() {
                 val density = resources.displayMetrics.density
                 // Larger icon without adaptive-icon padding so no halo/transition is visible
                 val iconSize = (44 * density).toInt()
-                val sidePadding = (6 * density).toInt()
+                val sidePadding = (2 * density).toInt()
 
                 val iconView = android.widget.ImageView(this@MainActivity).apply {
                     id = android.view.View.generateViewId()
@@ -355,6 +355,8 @@ class MainActivity : SimpleActivity() {
                         marginStart = sidePadding
                     }
                     setImageResource(R.drawable.total_commander_toolbar)
+                    // Move the header icon 8dp to the left.
+                    translationX = (-8 * density)
                     scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                     setPadding(0, 0, 0, 0)
                     adjustViewBounds = true
