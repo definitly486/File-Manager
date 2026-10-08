@@ -276,7 +276,6 @@
                     android:layout_height="64dp"
                     android:layout_gravity="start|center_vertical"
                     android:src="@drawable/ic_plus_vector"
-        app:maxImageSize="40dp"
                     app:elevation="0dp"
                     app:pressedTranslationZ="0dp"
                     app:shapeAppearanceOverlay="@style/SquareShape" />

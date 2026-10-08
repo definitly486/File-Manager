@@ -37,7 +37,7 @@
             android:paddingStart="@dimen/small_margin"
             android:paddingEnd="@dimen/small_margin"
             android:singleLine="true"
-            android:fontFamily="sans-serif"
+            android:fontFamily="sans-serif-light"
             android:textStyle="normal"
             tools:text="Directory" />
 
