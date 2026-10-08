@@ -107,10 +107,15 @@ class MainActivity : SimpleActivity() {
             }
         }
 
+        // Only the Files screen is used now: bottom tabs (Files / Recents / Storage) are removed
+        mTabsToShow = arrayListOf(TAB_FILES)
+        config.showTabs = TAB_FILES
+        config.lastUsedViewPagerPage = 0
+
         storeStateVariables()
         setupTabs()
 
-        setupEdgeToEdge(padBottomImeAndSystem = listOf(binding.mainTabsHolder))
+        setupEdgeToEdge(padBottomImeAndSystem = listOf(binding.mainHolder))
 
         if (savedInstanceState == null) {
             config.temporarilyShowHidden = false
@@ -124,6 +129,7 @@ class MainActivity : SimpleActivity() {
 
     override fun onResume() {
         super.onResume()
+        config.showTabs = TAB_FILES
         if (mStoredShowTabs != config.showTabs) {
             config.lastUsedViewPagerPage = 0
             System.exit(0)

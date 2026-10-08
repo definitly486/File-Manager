@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             app:tabIndicator="@null"
             app:tabMinWidth="150dp"
             app:tabRippleColor="@null" />

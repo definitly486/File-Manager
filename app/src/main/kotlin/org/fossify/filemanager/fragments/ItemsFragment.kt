@@ -473,7 +473,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
 
     private fun updateBarColors(textColor: Int) {
         binding.apply {
-            itemsBottomBar.setBackgroundColor(context!!.getProperBackgroundColor())
+            itemsBottomHolder.setBackgroundColor(context!!.getProperBackgroundColor())
             listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sideMove, sideOpen, sideSelectAll, sideInvert)
                 .forEach { it.setColorFilter(textColor) }
         }
