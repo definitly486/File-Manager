@@ -59,6 +59,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/items_header_actions"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
@@ -100,19 +101,10 @@
                         android:textSize="@dimen/smaller_text_size" />
 
                     <ImageView
-                        android:id="@+id/home_button"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/go_to_home_folder"
-                        android:padding="0dp"
-                        android:src="@drawable/tc_home" />
-
-                    <ImageView
                         android:id="@+id/refresh_button"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="0dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@null"
                         android:padding="0dp"
