@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Total Commander–style Downloads icon: green folder with white down arrow -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Folder body (green) -->
+    <path
+        android:fillColor="#43A047"
+        android:pathData="M6,14
+            L6,38
+            Q6,40 8,40
+            L40,40
+            Q42,40 42,38
+            L42,18
+            Q42,16 40,16
+            L24,16
+            L20,12
+            L8,12
+            Q6,12 6,14
+            Z" />
+
+    <!-- Folder tab (slightly darker green) -->
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M6,14
+            L6,16
+            L24,16
+            L20,12
+            L8,12
+            Q6,12 6,14
+            Z" />
+
+    <!-- White down-arrow circle background (subtle) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.15"
+        android:pathData="M24,20
+            A10,10 0 1,1 24,40
+            A10,10 0 1,1 24,20
+            Z" />
+
+    <!-- White download arrow -->
+    <!-- Arrow shaft -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,22 L26,22 L26,30 L22,30 Z" />
+    <!-- Arrow head -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M18,29 L24,36 L30,29 Z" />
+</vector>

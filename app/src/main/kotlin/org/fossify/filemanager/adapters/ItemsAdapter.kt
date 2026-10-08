@@ -1232,7 +1232,7 @@ class ItemsAdapter(
                         listItem.path.endsWith("/DCIM") ->
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_image, activity.theme))
                         listItem.path.endsWith("/Download") ->
-                            itemIcon?.setImageDrawable(folderDrawable)
+                            itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_download, activity.theme))
                         listItem.path == "://bookmarks" -> {
                             val d = resources.getDrawable(R.drawable.ic_home_vector, activity.theme).mutate()
                             d.applyColorFilter(textColor)
