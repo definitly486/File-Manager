@@ -242,6 +242,12 @@ class MainActivity : SimpleActivity() {
             }
 
             requireToolbar().setOnMenuItemClickListener { menuItem ->
+                // Close button always works (like original Total Commander)
+                if (menuItem.itemId == R.id.exit_app) {
+                    finishAndRemoveTask()
+                    return@setOnMenuItemClickListener true
+                }
+
                 if (getCurrentFragment() == null) {
                     return@setOnMenuItemClickListener true
                 }
