@@ -53,7 +53,6 @@ import org.fossify.commons.extensions.createDirectorySync
 import org.fossify.commons.extensions.deleteFile
 import org.fossify.commons.extensions.deleteFileBg
 import org.fossify.commons.extensions.deleteFolderBg
-import org.fossify.commons.extensions.formatDate
 import org.fossify.commons.extensions.formatSize
 import org.fossify.commons.extensions.getAndroidSAFFileItems
 import org.fossify.commons.extensions.getAndroidSAFUri
@@ -140,6 +139,9 @@ class ItemsAdapter(
     private val hasOTGConnected = activity.hasOTGConnected()
     private var fontSize = 0f
     private var smallerFontSize = 0f
+    private var listNameFontSize = 0f
+    private var gridNameFontSize = 0f
+    private var detailsFontSize = 0f
     private var dateFormat = ""
     private var timeFormat = ""
 
@@ -1115,7 +1117,18 @@ class ItemsAdapter(
     fun updateFontSizes() {
         fontSize = activity.getTextSize()
         smallerFontSize = fontSize * 0.8f
+        // Total Commander-like compact captions
+        listNameFontSize = fontSize * 0.85f
+        gridNameFontSize = fontSize * 0.65f
+        detailsFontSize = fontSize * 0.62f
         notifyDataSetChanged()
+    }
+
+    // Compact Total Commander-like date: 3.01.2026 14:05 (time follows the 12/24h setting)
+    private fun formatCompactDate(millis: Long): String {
+        val cal = java.util.Calendar.getInstance()
+        cal.timeInMillis = millis
+        return android.text.format.DateFormat.format("d.MM.yyyy $timeFormat", cal).toString()
     }
 
     fun updateDateTimeFormat() {
@@ -1183,14 +1196,14 @@ class ItemsAdapter(
                 itemName?.setTextColor(textColor)
                 itemName?.setTextSize(
                     TypedValue.COMPLEX_UNIT_PX,
-                    if (isListViewType) fontSize else smallerFontSize
+                    if (isListViewType) listNameFontSize else gridNameFontSize
                 )
 
                 itemDetails?.setTextColor(textColor)
-                itemDetails?.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
+                itemDetails?.setTextSize(TypedValue.COMPLEX_UNIT_PX, detailsFontSize)
 
                 itemDate?.setTextColor(textColor)
-                itemDate?.setTextSize(TypedValue.COMPLEX_UNIT_PX, smallerFontSize)
+                itemDate?.setTextSize(TypedValue.COMPLEX_UNIT_PX, detailsFontSize)
 
                 itemCheck?.beVisibleIf(isSelected)
                 if (isSelected) {
@@ -1209,11 +1222,11 @@ class ItemsAdapter(
                     itemIcon?.setImageDrawable(folderDrawable)
                     itemDetails?.text = DIR_LABEL
                     itemDate?.beVisible()
-                    itemDate?.text = listItem.modified.formatDate(activity, dateFormat, timeFormat)
+                    itemDate?.text = formatCompactDate(listItem.modified)
                 } else {
                     itemDetails?.text = listItem.size.formatSize()
                     itemDate?.beVisible()
-                    itemDate?.text = listItem.modified.formatDate(activity, dateFormat, timeFormat)
+                    itemDate?.text = formatCompactDate(listItem.modified)
 
                     val drawable = fileDrawables.getOrElse(
                         key = fileName.substringAfterLast(".").lowercase(Locale.getDefault()),
