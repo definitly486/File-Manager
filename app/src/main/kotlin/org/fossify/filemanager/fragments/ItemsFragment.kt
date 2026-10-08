@@ -627,14 +627,32 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     fun getBreadcrumbs() = binding.breadcrumbs
 
     private fun goToParentFolder() {
+        getRecyclerAdapter()?.finishActMode()
+        val path = currentPath.trimEnd('/')
+        val ctx = context ?: return
+        // Volume roots (internal storage, SD, OTG, device root) → TC home screen
+        val storageRoots = mutableListOf(
+            ctx.internalStoragePath.trimEnd('/'),
+            "/"
+        )
+        val sd = ctx.sdCardPath.trimEnd('/')
+        if (sd.isNotEmpty()) storageRoots.add(sd)
+        val otg = ctx.config.OTGPath.trimEnd('/')
+        if (otg.isNotEmpty()) storageRoots.add(otg)
+        if (path in storageRoots || path.isEmpty()) {
+            openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
+            return
+        }
         val crumbs = binding.breadcrumbs
         val count = crumbs.getItemCount()
-        getRecyclerAdapter()?.finishActMode()
         if (count > 1) {
             openPath(crumbs.getItem(count - 2).path)
         } else {
-            StoragePickerDialog(activity as SimpleActivity, currentPath, context!!.config.enableRootAccess, true) {
-                openPath(it)
+            val parent = path.substringBeforeLast('/', missingDelimiterValue = "")
+            if (parent.isEmpty() || parent == path) {
+                openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
+            } else {
+                openPath(parent)
             }
         }
     }
@@ -781,10 +799,9 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
 
     override fun breadcrumbClicked(id: Int) {
         if (id == 0) {
-            StoragePickerDialog(activity as SimpleActivity, currentPath, context!!.config.enableRootAccess, true) {
-                getRecyclerAdapter()?.finishActMode()
-                openPath(it)
-            }
+            // Root breadcrumb → TC home screen
+            getRecyclerAdapter()?.finishActMode()
+            openPath(org.fossify.filemanager.helpers.HOME_SCREEN_PATH)
         } else {
             val item = binding.breadcrumbs.getItem(id)
             openPath(item.path)

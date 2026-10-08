@@ -348,6 +348,7 @@ class MainActivity : SimpleActivity() {
     }
 
     private var toolbarTitleView: android.widget.TextView? = null
+    private var toolbarIconView: android.widget.ImageView? = null
 
     // Total Commander-style branding: a small app icon followed by the title.
     // The action icons remain on the right, while the search field stays hidden
@@ -400,8 +401,13 @@ class MainActivity : SimpleActivity() {
                     setPadding(0, 0, 0, 0)
                     adjustViewBounds = true
                     contentDescription = getString(R.string.app_name)
+                    isClickable = true
+                    isFocusable = true
+                    // Tap app icon → open TC home screen
+                    setOnClickListener { goHome() }
                 }
                 toolbarContainer.addView(iconView)
+                toolbarIconView = iconView
 
                 val params = android.widget.RelativeLayout.LayoutParams(
                     android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -420,6 +426,9 @@ class MainActivity : SimpleActivity() {
                     maxLines = 1
                     setTypeface(typeface, android.graphics.Typeface.BOLD)
                     setTextColor(config.textColor)
+                    isClickable = true
+                    isFocusable = true
+                    setOnClickListener { goHome() }
                 }
                 toolbarContainer.addView(titleView)
                 toolbarTitleView = titleView
