@@ -80,9 +80,8 @@ class MainActivity : SimpleActivity() {
     companion object {
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
-        // Matches the dark halo baked into total_commander_toolbar.png (~#151515),
-        // so the icon blends into the header with no visible edge.
-        private const val TOP_BAR_COLOR = 0xFF151515.toInt()
+        // Header color #1f1e1f (RGB 31, 30, 31)
+        private const val TOP_BAR_COLOR =  0x212121.toInt()
         private const val NAV_BAR_COLOR = 0xFF201E21.toInt()
         private const val STATUS_BAR_COLOR = 0xFF000000.toInt()
     }
