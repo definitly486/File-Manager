@@ -10,6 +10,7 @@ import org.fossify.commons.views.MyFloatingActionButton
 import org.fossify.filemanager.R
 import org.fossify.filemanager.activities.MainActivity
 import org.fossify.filemanager.activities.SimpleActivity
+import org.fossify.filemanager.activities.VideoPlayerActivity
 import org.fossify.filemanager.databinding.ItemsFragmentBinding
 import org.fossify.filemanager.databinding.RecentsFragmentBinding
 import org.fossify.filemanager.databinding.StorageFragmentBinding
@@ -39,6 +40,9 @@ abstract class MyViewPagerFragment<BINDING : MyViewPagerFragment.InnerBinding>(c
             } else {
                 activity?.toast(R.string.select_audio_file)
             }
+        } else if (path.isVideoFast()) {
+            // Built-in simple video viewer (like Total Commander's F3 view)
+            activity?.let { VideoPlayerActivity.start(it, path) }
         } else {
             activity?.tryOpenPathIntent(path, false)
         }

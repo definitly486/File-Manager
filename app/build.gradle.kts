@@ -23,7 +23,7 @@ fun hasSigningVars(): Boolean {
 
 base {
     val versionCode = project.property("VERSION_CODE").toString().toInt()
-    archivesName = "file-manager-$versionCode"
+    archivesName = "file-manager-videomode-$versionCode"
 }
 
 android {
@@ -147,5 +147,7 @@ dependencies {
     implementation(libs.gestureviews)
     implementation(libs.autofittextview)
     implementation(libs.zip4j)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     detektPlugins(libs.compose.detekt)
 }

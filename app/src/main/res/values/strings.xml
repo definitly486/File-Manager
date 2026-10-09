@@ -41,6 +41,7 @@
 
     <!-- File Editor -->
     <string name="file_editor">File Editor</string>
+    <string name="video_play_error">Cannot play this video, opening in another app</string>
 
     <!-- Storage analysis -->
     <string name="storage_analysis">Storage analysis</string>

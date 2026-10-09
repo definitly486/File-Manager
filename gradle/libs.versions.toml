@@ -15,6 +15,7 @@ gestureviews = "2.9.0"
 rootshell = "bc7e5d398e"
 roottools = "965c154e20"
 zip4j = "2.11.6"
+media3 = "1.8.0"
 #Gradle
 gradlePlugins-agp = "9.4.1"
 #build
@@ -37,6 +38,8 @@ gestureviews = { module = "com.alexvasilkov:gesture-views", version.ref = "gestu
 rootshell = { module = "com.github.naveensingh:RootShell", version.ref = "rootshell" }
 roottools = { module = "com.github.naveensingh:RootTools", version.ref = "roottools" }
 zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4j" }
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
 [plugins]
 android = { id = "com.android.application", version.ref = "gradlePlugins-agp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
