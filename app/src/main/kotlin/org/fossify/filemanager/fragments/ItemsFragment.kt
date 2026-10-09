@@ -169,12 +169,14 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 binding.pathText.text = ""
                 binding.freeSpaceText.text = ""
                 binding.itemsHeaderActions.beGone()
+                binding.itemsHeaderDivider.beGone()
             } else {
                 // Folder pages: show parent / free space / home / refresh
                 binding.breadcrumbs.setBreadcrumb(currentPath)
                 binding.pathText.text = currentPath
                 binding.freeSpaceText.text = getFreeSpaceText(currentPath)
                 binding.itemsHeaderActions.beVisible()
+                binding.itemsHeaderDivider.beVisible()
                 binding.parentDirHolder.beVisible()
                 binding.homeButton.beVisible()
                 binding.refreshButton.beVisible()

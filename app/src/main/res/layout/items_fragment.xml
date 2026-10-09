@@ -121,6 +121,7 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/items_header_divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#40FFFFFF" />
