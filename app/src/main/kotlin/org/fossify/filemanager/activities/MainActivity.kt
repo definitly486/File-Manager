@@ -468,7 +468,10 @@ class MainActivity : SimpleActivity() {
                 lp.marginEnd = 0
                 topToolbar.layoutParams = lp
             }
-            topToolbar.setContentInsetsRelative(topToolbar.contentInsetStart, 0)
+            // Drop the toolbar's start inset too: it is added to the toolbar's width and only steals
+            // room from the title, which is stretched between the icon and the toolbar.
+            topToolbar.contentInsetStartWithNavigation = 0
+            topToolbar.setContentInsetsRelative(0, 0)
             topToolbar.setContentInsetEndWithActions(0)
             topToolbar.setPadding(0, topToolbar.paddingTop, 0, topToolbar.paddingBottom)
 
@@ -510,7 +513,8 @@ class MainActivity : SimpleActivity() {
                     addRule(android.widget.RelativeLayout.CENTER_VERTICAL)
                     addRule(android.widget.RelativeLayout.END_OF, iconView.id)
                     addRule(android.widget.RelativeLayout.START_OF, topToolbar.id)
-                    marginStart = (4 * density).toInt()
+                    // Gap between the header icon and the title (icon position is not changed)
+                    marginStart = (10 * density).toInt()
                 }
 
                 val titleView = android.widget.TextView(this@MainActivity).apply {
@@ -518,6 +522,8 @@ class MainActivity : SimpleActivity() {
                     text = getString(R.string.app_name)
                     textSize = 20f
                     maxLines = 1
+                    // Same as Total Commander: cut the title with an ellipsis at the end ("Total Co…")
+                    ellipsize = android.text.TextUtils.TruncateAt.END
                     setTypeface(typeface, android.graphics.Typeface.BOLD)
                     setTextColor(config.textColor)
                     isClickable = true
