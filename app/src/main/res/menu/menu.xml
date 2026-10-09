@@ -15,7 +15,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/go_to_favorite"
-        android:icon="@drawable/ic_folder_open_vector"
+        android:icon="@drawable/ic_bookmark_star_vector"
         android:title="@string/go_to_favorite"
         app:showAsAction="always" />
     <item

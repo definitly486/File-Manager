@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Total Commander-style bookmarks: star inside a rounded square -->
+    <path
+        android:pathData="M5,3.5L19,3.5Q20.5,3.5 20.5,5L20.5,19Q20.5,20.5 19,20.5L5,20.5Q3.5,20.5 3.5,19L3.5,5Q3.5,3.5 5,3.5Z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.6" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,6.2L13.6,10.1L17.8,10.4L14.6,13.1L15.6,17.2L12,15L8.4,17.2L9.4,13.1L6.2,10.4L10.4,10.1Z" />
+</vector>
