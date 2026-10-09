@@ -22,4 +22,16 @@
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/video_volume_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#99000000"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:visibility="gone" />
 </FrameLayout>
