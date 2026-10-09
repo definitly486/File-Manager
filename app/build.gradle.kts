@@ -23,7 +23,7 @@ fun hasSigningVars(): Boolean {
 
 base {
     val versionCode = project.property("VERSION_CODE").toString().toInt()
-    archivesName = "file-manager-video-$versionCode"
+    archivesName = "file-manager-videomode-$versionCode"
 }
 
 android {
