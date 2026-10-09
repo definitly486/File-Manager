@@ -275,7 +275,8 @@ class MainActivity : SimpleActivity() {
                 }
                 // Items already on the action bar should not repeat in overflow
                 if (item.itemId == R.id.search || item.itemId == R.id.exit_app ||
-                    item.itemId == R.id.go_home || item.itemId == R.id.go_to_favorite
+                    item.itemId == R.id.go_home || item.itemId == R.id.go_to_favorite ||
+                    item.itemId == R.id.add_favorite || item.itemId == R.id.remove_favorite
                 ) {
                     item.isVisible = false
                 }
