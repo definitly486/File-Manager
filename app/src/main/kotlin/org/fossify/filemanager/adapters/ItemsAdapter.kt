@@ -1257,9 +1257,10 @@ class ItemsAdapter(
                         listItem.path == "://user_location" ->
                             // Blue plus like original Total Commander
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_plus, activity.theme))
-                        listItem.path.endsWith("/DCIM") ->
+                        // Special Photos / Downloads icons only on the home screen (children == -1)
+                        listItem.children == -1 && listItem.path.endsWith("/DCIM") ->
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_image, activity.theme))
-                        listItem.path.endsWith("/Download") ->
+                        listItem.children == -1 && listItem.path.endsWith("/Download") ->
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_download, activity.theme))
                         listItem.path == "://bookmarks" ->
                             // Yellow folder + star like original Total Commander
