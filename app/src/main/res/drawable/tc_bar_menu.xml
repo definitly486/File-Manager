@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Total Commander-style checklist icon (two check marks with lines) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- upper check mark -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2.5,6.5 L4.5,8.5 L8,4.5" />
+    <!-- lower check mark -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2.5,16.5 L4.5,18.5 L8,14.5" />
+    <!-- text lines -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M11,5.5h10.5v1.8H11z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M11,10.2h10.5v1.8H11z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M11,15.5h10.5v1.8H11z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M11,20.2h10.5v1.8H11z" />
+</vector>

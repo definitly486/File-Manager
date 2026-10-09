@@ -307,7 +307,7 @@
                     android:paddingTop="11dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="11dp"
-                    android:src="@drawable/ic_bar_menu_vector" />
+                    android:src="@drawable/tc_bar_menu" />
 
                 <ImageView
                     android:id="@+id/bar_new_file"
