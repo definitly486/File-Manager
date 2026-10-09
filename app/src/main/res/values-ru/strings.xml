@@ -61,4 +61,13 @@
     <string name="tc_menu_theme_to_dark">Светлая -&gt; Тёмная</string>
     <string name="tc_menu_theme_to_light">Тёмная -&gt; Светлая</string>
     <string name="tc_menu_help">Справка (HTML)</string>
+    <string name="exit">Выход</string>
+    <string name="invert_selection">Обратить выделение</string>
+    <string name="more_options">Ещё</string>
+    <string name="new_file">Новый файл</string>
+    <string name="new_folder">Новая папка</string>
+    <string name="select_items_first">Сначала выберите файлы</string>
+    <string name="swap_selection">Поменять выделение</string>
+    <string name="video_play_error">Не удаётся воспроизвести видео, открываю в другом приложении</string>
+    <string name="video_volume">Громкость: %1$d%%</string>
 </resources>

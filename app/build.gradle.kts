@@ -23,7 +23,7 @@ fun hasSigningVars(): Boolean {
 
 base {
     val versionCode = project.property("VERSION_CODE").toString().toInt()
-    archivesName = "file-manager-videomode-$versionCode"
+    archivesName = "file-manager-video-$versionCode"
 }
 
 android {
@@ -37,6 +37,11 @@ android {
         versionCode = project.property("VERSION_CODE").toString().toInt()
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
+
+        // Only 64-bit ARM native libs (all modern phones). Add "armeabi-v7a" / "x86_64" if needed.
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
     }
 
     signingConfigs {
@@ -70,6 +75,7 @@ android {
         }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -106,6 +112,9 @@ android {
     androidResources {
         @Suppress("UnstableApiUsage")
         generateLocaleConfig = true
+        // Keep only Russian (also strips translations of bundled libraries).
+        // Default English strings in values/ stay as a fallback for anything untranslated.
+        localeFilters += listOf("ru")
     }
 
     tasks.withType<KotlinCompile> {
