@@ -73,6 +73,11 @@
         </activity>
 
         <activity
+            android:name=".activities.HelpActivity"
+            android:exported="false"
+            android:label="@string/tc_menu_help" />
+
+        <activity
             android:name=".activities.MimeTypesActivity"
             android:configChanges="orientation"
             android:exported="false"

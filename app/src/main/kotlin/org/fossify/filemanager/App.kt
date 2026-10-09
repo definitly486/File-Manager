@@ -3,6 +3,7 @@ package org.fossify.filemanager
 import com.github.ajalt.reprint.core.Reprint
 import org.fossify.commons.FossifyApp
 import org.fossify.commons.extensions.baseConfig
+import org.fossify.filemanager.helpers.TcTheme
 
 class App : FossifyApp() {
     override val isAppLockFeatureAvailable = true
@@ -13,19 +14,13 @@ class App : FossifyApp() {
         applyCommanderTheme()
     }
 
-    // Fixed dark blue-gray look (Total Commander style, gray), independent of the system theme.
-    private fun applyCommanderTheme() {
+    // Total Commander look: dark by default, light after "Light -> Dark" in the overflow menu (see TcTheme).
+    fun applyCommanderTheme() {
         baseConfig.apply {
             isSystemThemeEnabled = false
-            backgroundColor = BACKGROUND_COLOR
-            textColor = TEXT_COLOR
-            primaryColor = PRIMARY_COLOR
+            backgroundColor = TcTheme.background(this@App)
+            textColor = TcTheme.text(this@App)
+            primaryColor = TcTheme.topBar(this@App)
         }
-    }
-
-    private companion object {
-        const val BACKGROUND_COLOR = 0xFF312F32.toInt()
-        const val TEXT_COLOR = 0xFFFFFFFF.toInt()
-        const val PRIMARY_COLOR = 0xFF201E21.toInt()
     }
 }

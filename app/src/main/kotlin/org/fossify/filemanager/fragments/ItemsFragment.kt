@@ -530,11 +530,15 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     private fun updateBarColors(textColor: Int) {
         binding.apply {
             itemsBottomHolder.setBackgroundColor(context!!.getProperBackgroundColor())
-            itemsFab.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#312f32"))
+            itemsFab.backgroundTintList = ColorStateList.valueOf(org.fossify.filemanager.helpers.TcTheme.background(context!!))
+            itemsHeader.setBackgroundColor(org.fossify.filemanager.helpers.TcTheme.background(context!!))
+            itemsHeaderActions.setBackgroundColor(org.fossify.filemanager.helpers.TcTheme.background(context!!))
             listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sideMove, sideOpen, sideSelectAll, sideInvert, sideUp)
                 .forEach { it.setColorFilter(textColor) }
         }
     }
+
+    fun createNewFolder() = createNewItem(true)
 
     private fun createNewItem(isDirectory: Boolean? = null) {
         CreateNewItemDialog(activity as SimpleActivity, currentPath, isDirectory) {

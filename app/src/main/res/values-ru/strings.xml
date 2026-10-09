@@ -55,4 +55,10 @@
     <string name="bookmarks">Закладки</string>
     <string name="my_apps">Мои приложения</string>
     <string name="add_connection">Добавить подключение</string>
+    <string name="tc_menu_exit">Выход</string>
+    <string name="tc_menu_new_folder">Новая папка...</string>
+    <string name="tc_menu_settings">Настройки...</string>
+    <string name="tc_menu_theme_to_dark">Светлая -&gt; Тёмная</string>
+    <string name="tc_menu_theme_to_light">Тёмная -&gt; Светлая</string>
+    <string name="tc_menu_help">Справка (HTML)</string>
 </resources>
