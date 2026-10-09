@@ -510,6 +510,11 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             }
             sideSelectAll.setOnClickListener { getRecyclerAdapter()?.selectAllItems() }
             sideInvert.setOnClickListener { getRecyclerAdapter()?.invertSelection() }
+            sideUp.setOnClickListener {
+                if (currentPath != org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+                    goToParentFolder()
+                }
+            }
         }
     }
 
@@ -526,7 +531,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
         binding.apply {
             itemsBottomHolder.setBackgroundColor(context!!.getProperBackgroundColor())
             itemsFab.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#312f32"))
-            listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sideMove, sideOpen, sideSelectAll, sideInvert)
+            listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sideMove, sideOpen, sideSelectAll, sideInvert, sideUp)
                 .forEach { it.setColorFilter(textColor) }
         }
     }
