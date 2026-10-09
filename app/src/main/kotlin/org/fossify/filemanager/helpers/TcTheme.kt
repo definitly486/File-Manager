@@ -19,5 +19,6 @@ object TcTheme {
     fun text(c: Context) = if (isLight(c)) 0xFF202020.toInt() else 0xFFFFFFFF.toInt()
     fun topBar(c: Context) = if (isLight(c)) 0xFFF5F5F5.toInt() else 0xFF201E21.toInt()
     fun navBar(c: Context) = topBar(c)
-    fun statusBar() = 0xFF000000.toInt()
+    // dark: black; light: the gray of the real Total Commander (#727272)
+    fun statusBar(c: Context) = if (isLight(c)) 0xFF727272.toInt() else 0xFF000000.toInt()
 }

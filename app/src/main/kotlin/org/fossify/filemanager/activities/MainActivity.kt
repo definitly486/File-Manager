@@ -85,7 +85,7 @@ class MainActivity : SimpleActivity() {
     // Bar colors follow the light/dark switch (see TcTheme).
     private val TOP_BAR_COLOR get() = org.fossify.filemanager.helpers.TcTheme.topBar(this)
     private val NAV_BAR_COLOR get() = org.fossify.filemanager.helpers.TcTheme.navBar(this)
-    private val STATUS_BAR_COLOR get() = org.fossify.filemanager.helpers.TcTheme.statusBar()
+    private val STATUS_BAR_COLOR get() = org.fossify.filemanager.helpers.TcTheme.statusBar(this)
 
     private val binding by viewBinding(ActivityMainBinding::inflate)
 
@@ -150,6 +150,7 @@ class MainActivity : SimpleActivity() {
 
         refreshMenuItems()
         updateMenuColors()
+        applyStatusBarIcons()
         setupTabColors()
 
         getAllFragments().forEach {
@@ -456,12 +457,17 @@ class MainActivity : SimpleActivity() {
 
     private var statusBarCover: android.view.View? = null
 
+    // Status bar icons: white on the black (dark) / gray (light) cover.
+    private fun applyStatusBarIcons() {
+        androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = false
+    }
+
     // With targetSdk 36 the app is drawn edge-to-edge and window.statusBarColor is ignored,
     // so the area behind the system status bar shows whatever the layout paints there.
     // A black view pinned to the top, exactly as tall as the status bar, forces it to be black.
     private fun setupBlackStatusBar() {
-        androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
-            .isAppearanceLightStatusBars = false
+        applyStatusBarIcons()
 
         if (statusBarCover != null) return
 
@@ -474,12 +480,15 @@ class MainActivity : SimpleActivity() {
             isClickable = false
             isFocusable = false
         }
-        binding.root.addView(
+        // Added to the decor view, not to binding.root: the root is padded by the status bar inset,
+        // so a child of it would sit one status-bar height too low and cover the toolbar.
+        (window.decorView as android.view.ViewGroup).addView(
             cover,
-            androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams(
+            android.widget.FrameLayout.LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                fallbackHeight
-            ).apply { gravity = android.view.Gravity.TOP }
+                fallbackHeight,
+                android.view.Gravity.TOP
+            )
         )
         statusBarCover = cover
 
