@@ -19,6 +19,7 @@ import android.widget.ImageView
 import android.view.ContextThemeWrapper
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
@@ -1245,6 +1246,13 @@ class ItemsAdapter(
 
                 itemDate?.setTextColor(textColor)
                 itemDate?.setTextSize(TypedValue.COMPLEX_UNIT_PX, detailsFontSize)
+                // Recycled rows must not keep the raised date/icon of the user-location row:
+                // by default it is aligned with the details line
+                (itemDate?.layoutParams as? ConstraintLayout.LayoutParams)?.let { lp ->
+                    lp.topToTop = R.id.item_details
+                    lp.bottomToBottom = R.id.item_details
+                    itemDate?.layoutParams = lp
+                }
 
                 // No selection check mark on home-screen rows
                 val showCheck = isSelected && listItem.children != -1
@@ -1317,6 +1325,13 @@ class ItemsAdapter(
                             refreshIcon.setBounds(0, 0, size, size)
                             itemDate?.setCompoundDrawables(null, null, refreshIcon, null)
                             itemDate?.compoundDrawablePadding = 6
+                            // Move the green icon higher: align its top with the title line
+                            // instead of the bottom (hint) line
+                            (itemDate?.layoutParams as? ConstraintLayout.LayoutParams)?.let { lp ->
+                                lp.topToTop = R.id.item_name
+                                lp.bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+                                itemDate?.layoutParams = lp
+                            }
                         }
                         isHomeRow && (listItem.path.endsWith("/DCIM") || listItem.path.endsWith("/Download")) -> {
                             // Home screen only — Photos / Downloads: path on the right (as in Total Commander).
