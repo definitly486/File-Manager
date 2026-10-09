@@ -330,8 +330,13 @@ class ItemsAdapter(
             .bind(holder.itemView)
 
         val longClickListener = View.OnLongClickListener {
-            // Home-screen rows: long press does nothing
-            if (listItem.children != -1) {
+            if (listItem.children == -1) {
+                // Home-screen rows: long press shows properties of the target folder
+                val target = if (listItem.path == "://internal") activity.internalStoragePath else listItem.path
+                if (!target.startsWith("://")) {
+                    PropertiesDialog(activity, target, config.shouldShowHidden())
+                }
+            } else {
                 showItemOptionsMenu(holder)
             }
             true
