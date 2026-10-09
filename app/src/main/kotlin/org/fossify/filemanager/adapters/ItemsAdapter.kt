@@ -1342,12 +1342,24 @@ class ItemsAdapter(
                             itemDate?.beVisible()
                             itemDate?.text = formatCompactDate(listItem.modified)
                             itemDate?.setCompoundDrawables(null, null, null, null)
+                            // DIR / date-time flush against the right edge: drop the row's end padding
+                            (itemDate?.parent as? View)?.let { row ->
+                                row.setPaddingRelative(
+                                    row.paddingStart, row.paddingTop, 0, row.paddingBottom
+                                )
+                            }
                         }
                     }
                 } else {
                     itemDetails?.text = listItem.size.formatSize()
                     itemDate?.beVisible()
                     itemDate?.text = formatCompactDate(listItem.modified)
+                    // Size / date-time flush against the right edge: drop the row's end padding
+                    (itemDate?.parent as? View)?.let { row ->
+                        row.setPaddingRelative(
+                            row.paddingStart, row.paddingTop, 0, row.paddingBottom
+                        )
+                    }
 
                     val drawable = fileDrawables.getOrElse(
                         key = fileName.substringAfterLast(".").lowercase(Locale.getDefault()),
