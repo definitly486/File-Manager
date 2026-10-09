@@ -330,13 +330,23 @@ class ItemsAdapter(
             .bind(holder.itemView)
 
         val longClickListener = View.OnLongClickListener {
-            showItemOptionsMenu(holder)
+            // Home-screen rows: long press does nothing
+            if (listItem.children != -1) {
+                showItemOptionsMenu(holder)
+            }
             true
         }
 
         holder.itemView.setOnLongClickListener(longClickListener)
         binding.itemIcon?.apply {
-            setOnClickListener { toggleSelectionByIcon(holder) }
+            setOnClickListener {
+                // Home-screen rows: tapping the icon opens the target, same as tapping the row
+                if (listItem.children == -1 && !actModeCallback.isSelectable) {
+                    holder.itemView.performClick()
+                } else {
+                    toggleSelectionByIcon(holder)
+                }
+            }
             setOnLongClickListener(longClickListener)
         }
     }
@@ -1236,8 +1246,10 @@ class ItemsAdapter(
                 itemDate?.setTextColor(textColor)
                 itemDate?.setTextSize(TypedValue.COMPLEX_UNIT_PX, detailsFontSize)
 
-                itemCheck?.beVisibleIf(isSelected)
-                if (isSelected) {
+                // No selection check mark on home-screen rows
+                val showCheck = isSelected && listItem.children != -1
+                itemCheck?.beVisibleIf(showCheck)
+                if (showCheck) {
                     // Green check mark drawn over the icon, without the round background
                     itemCheck?.background = null
                     itemCheck?.applyColorFilter(SELECTION_CHECK_COLOR)

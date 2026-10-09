@@ -170,6 +170,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 binding.freeSpaceText.text = ""
                 binding.itemsHeaderActions.beGone()
                 binding.itemsHeaderDivider.beGone()
+                binding.selectionCount.beGone()
             } else {
                 // Folder pages: show parent / free space / home / refresh
                 binding.breadcrumbs.setBreadcrumb(currentPath)
@@ -177,6 +178,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 binding.freeSpaceText.text = getFreeSpaceText(currentPath)
                 binding.itemsHeaderActions.beVisible()
                 binding.itemsHeaderDivider.beVisible()
+                binding.selectionCount.beVisible()
                 binding.parentDirHolder.beVisible()
                 binding.homeButton.beVisible()
                 binding.refreshButton.beVisible()
