@@ -1303,8 +1303,9 @@ class ItemsAdapter(
                             itemDate?.setCompoundDrawables(null, null, refreshIcon, null)
                             itemDate?.compoundDrawablePadding = 6
                         }
-                        listItem.path.endsWith("/DCIM") || listItem.path.endsWith("/Download") -> {
-                            // Photos / Downloads: path on the right (as in Total Commander)
+                        isHomeRow && (listItem.path.endsWith("/DCIM") || listItem.path.endsWith("/Download")) -> {
+                            // Home screen only — Photos / Downloads: path on the right (as in Total Commander).
+                            // Elsewhere these folders fall through to the regular DIR / date-time row.
                             itemName?.maxLines = 1
                             itemName?.ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
                             itemDetails?.gravity = android.view.Gravity.END
