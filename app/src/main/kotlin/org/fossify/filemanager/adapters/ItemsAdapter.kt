@@ -1274,6 +1274,8 @@ class ItemsAdapter(
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_image, activity.theme))
                         listItem.children == -1 && listItem.path.endsWith("/Download") ->
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_download, activity.theme))
+                        listItem.path == "://add_connection" ->
+                            itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_plus_green, activity.theme))
                         listItem.path == "://bookmarks" ->
                             // Yellow folder + star like original Total Commander
                             itemIcon?.setImageDrawable(resources.getDrawable(R.drawable.tc_bookmarks, activity.theme))

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Total Commander–style green plus -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#43A047"
+        android:pathData="M20,12 L28,12 L28,20 L36,20 L36,28 L28,28 L28,36 L20,36 L20,28 L12,28 L12,20 L20,20 Z" />
+</vector>

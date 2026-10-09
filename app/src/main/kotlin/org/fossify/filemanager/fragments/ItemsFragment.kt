@@ -342,6 +342,9 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                     openPath(it)
                 }
             }
+            "://add_connection" -> {
+                // Placeholder: no action yet
+            }
             "://bookmarks" -> {
                 activity?.startActivity(
                     android.content.Intent(activity, org.fossify.filemanager.activities.FavoritesActivity::class.java)
@@ -773,6 +776,20 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             ListItem(
                 mPath = appsPath,
                 mName = ctx.getString(R.string.my_apps),
+                mIsDirectory = true,
+                mChildren = -1,
+                mSize = 0L,
+                mModified = 0L,
+                isSectionTitle = false,
+                isGridTypeDivider = false
+            )
+        )
+
+        // 8. Add connection (green plus, like Total Commander)
+        items.add(
+            ListItem(
+                mPath = "://add_connection",
+                mName = ctx.getString(R.string.add_connection),
                 mIsDirectory = true,
                 mChildren = -1,
                 mSize = 0L,
