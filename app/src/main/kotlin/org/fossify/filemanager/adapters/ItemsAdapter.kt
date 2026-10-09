@@ -1214,6 +1214,24 @@ class ItemsAdapter(
 
                 itemDetails?.setTextColor(textColor)
                 itemDetails?.setTextSize(TypedValue.COMPLEX_UNIT_PX, detailsFontSize)
+                // Recycled rows must not keep the zeroed end paddings used by home-screen path rows
+                itemDetails?.let { details ->
+                    details.translationX = 0f
+                    details.setPaddingRelative(
+                        details.paddingStart,
+                        details.paddingTop,
+                        resources.getDimensionPixelSize(R.dimen.small_margin),
+                        details.paddingBottom
+                    )
+                    (details.parent as? View)?.let { row ->
+                        row.setPaddingRelative(
+                            row.paddingStart,
+                            row.paddingTop,
+                            resources.getDimensionPixelSize(R.dimen.bigger_margin),
+                            row.paddingBottom
+                        )
+                    }
+                }
 
                 itemDate?.setTextColor(textColor)
                 itemDate?.setTextSize(TypedValue.COMPLEX_UNIT_PX, detailsFontSize)
@@ -1264,6 +1282,12 @@ class ItemsAdapter(
                             itemDate?.beVisible()
                             itemDate?.text = activity.internalStoragePath
                             itemDate?.setCompoundDrawables(null, null, null, null)
+                            // Path flush against the right edge: drop the row's end padding
+                            (itemDate?.parent as? View)?.let { row ->
+                                row.setPaddingRelative(
+                                    row.paddingStart, row.paddingTop, 0, row.paddingBottom
+                                )
+                            }
                         }
                         listItem.path == "://user_location" -> {
                             // Title can wrap like TC; hint left under title near icon; green refresh on the right
@@ -1285,6 +1309,18 @@ class ItemsAdapter(
                             itemName?.ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
                             itemDetails?.gravity = android.view.Gravity.END
                             itemDetails?.text = listItem.path
+                            // Path flush against the right edge: drop the row's end padding and the
+                            // TextView's own end padding (translation would be clipped by clipToPadding)
+                            itemDetails?.let { details ->
+                                details.setPaddingRelative(
+                                    details.paddingStart, details.paddingTop, 0, details.paddingBottom
+                                )
+                                (details.parent as? View)?.let { row ->
+                                    row.setPaddingRelative(
+                                        row.paddingStart, row.paddingTop, 0, row.paddingBottom
+                                    )
+                                }
+                            }
                             itemDate?.beGone()
                             itemDate?.setCompoundDrawables(null, null, null, null)
                         }
