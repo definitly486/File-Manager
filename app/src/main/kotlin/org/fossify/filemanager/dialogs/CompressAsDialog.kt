@@ -1,5 +1,6 @@
 package org.fossify.filemanager.dialogs
 
+import org.fossify.filemanager.helpers.applyTcButtonColors
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import org.fossify.commons.activities.BaseSimpleActivity
@@ -39,6 +40,7 @@ class CompressAsDialog(val activity: BaseSimpleActivity, val path: String, val c
             .setNegativeButton(R.string.cancel, null)
             .apply {
                 activity.setupDialogStuff(binding.root, this, R.string.compress_as) { alertDialog ->
+                    alertDialog.applyTcButtonColors()
                     alertDialog.showKeyboard(binding.filenameValue)
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
                         val name = binding.filenameValue.value

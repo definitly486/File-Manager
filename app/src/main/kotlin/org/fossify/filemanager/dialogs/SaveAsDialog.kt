@@ -1,8 +1,8 @@
 package org.fossify.filemanager.dialogs
 
+import org.fossify.filemanager.helpers.applyTcButtonColors
 import androidx.appcompat.app.AlertDialog
 import org.fossify.commons.activities.BaseSimpleActivity
-import org.fossify.commons.dialogs.ConfirmationDialog
 import org.fossify.commons.dialogs.FilePickerDialog
 import org.fossify.commons.extensions.*
 import org.fossify.filemanager.R
@@ -51,6 +51,7 @@ class SaveAsDialog(
             .setNegativeButton(R.string.cancel, null)
             .apply {
                 activity.setupDialogStuff(binding.root, this, R.string.save_as) { alertDialog ->
+                    alertDialog.applyTcButtonColors()
                     alertDialog.showKeyboard(binding.filenameValue)
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                         val filename = binding.filenameValue.value
@@ -74,7 +75,7 @@ class SaveAsDialog(
 
                         if (!hidePath && activity.getDoesFilePathExist(newPath)) {
                             val title = String.format(activity.getString(R.string.file_already_exists_overwrite), newFilename)
-                            ConfirmationDialog(activity, title) {
+                            TcConfirmationDialog(activity, title) {
                                 callback(newPath, newFilename)
                                 alertDialog.dismiss()
                             }

@@ -4,6 +4,7 @@ import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.extensions.beGone
 import org.fossify.commons.extensions.getAlertDialogBuilder
 import org.fossify.commons.extensions.setupDialogStuff
+import org.fossify.filemanager.helpers.applyTcButtonColors
 import org.fossify.commons.helpers.VIEW_TYPE_GRID
 import org.fossify.commons.helpers.VIEW_TYPE_LIST
 import org.fossify.filemanager.R
@@ -38,7 +39,7 @@ class ChangeViewTypeDialog(val activity: BaseSimpleActivity, val path: String = 
             .setPositiveButton(R.string.ok) { dialog, which -> dialogConfirmed() }
             .setNegativeButton(R.string.cancel, null)
             .apply {
-                activity.setupDialogStuff(binding.root, this)
+                activity.setupDialogStuff(binding.root, this) { it.applyTcButtonColors() }
             }
     }
 

@@ -3,7 +3,7 @@ package org.fossify.filemanager.activities
 import android.content.Intent
 import android.os.Bundle
 import org.fossify.commons.dialogs.ChangeDateTimeFormatDialog
-import org.fossify.commons.dialogs.ConfirmationDialog
+import org.fossify.filemanager.dialogs.TcConfirmationDialog
 import org.fossify.commons.dialogs.RadioGroupDialog
 import org.fossify.commons.dialogs.SecurityDialog
 import org.fossify.commons.extensions.*
@@ -181,7 +181,7 @@ class SettingsActivity : SimpleActivity() {
                     if (config.isHiddenPasswordProtectionOn) {
                         val confirmationTextId = if (config.hiddenProtectionType == PROTECTION_FINGERPRINT)
                             R.string.fingerprint_setup_successfully else R.string.protection_setup_successfully
-                        ConfirmationDialog(this, "", confirmationTextId, R.string.ok, 0) { }
+                        TcConfirmationDialog(this, "", confirmationTextId, R.string.ok, 0) { }
                     }
                 }
             }
@@ -203,7 +203,7 @@ class SettingsActivity : SimpleActivity() {
                     if (config.isAppPasswordProtectionOn) {
                         val confirmationTextId = if (config.appProtectionType == PROTECTION_FINGERPRINT)
                             R.string.fingerprint_setup_successfully else R.string.protection_setup_successfully
-                        ConfirmationDialog(this, "", confirmationTextId, R.string.ok, 0) { }
+                        TcConfirmationDialog(this, "", confirmationTextId, R.string.ok, 0) { }
                     }
                 }
             }
@@ -225,7 +225,7 @@ class SettingsActivity : SimpleActivity() {
                     if (config.isDeletePasswordProtectionOn) {
                         val confirmationTextId = if (config.deleteProtectionType == PROTECTION_FINGERPRINT)
                             R.string.fingerprint_setup_successfully else R.string.protection_setup_successfully
-                        ConfirmationDialog(this, "", confirmationTextId, R.string.ok, 0) { }
+                        TcConfirmationDialog(this, "", confirmationTextId, R.string.ok, 0) { }
                     }
                 }
             }

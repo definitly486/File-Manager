@@ -1,5 +1,6 @@
 package org.fossify.filemanager.dialogs
 
+import org.fossify.filemanager.helpers.applyTcButtonColors
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import org.fossify.commons.extensions.*
@@ -31,6 +32,7 @@ class CreateNewItemDialog(
             .setNegativeButton(R.string.cancel, null)
             .apply {
                 activity.setupDialogStuff(binding.root, this, R.string.create_new) { alertDialog ->
+                    alertDialog.applyTcButtonColors()
                     alertDialog.showKeyboard(binding.itemTitle)
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(View.OnClickListener {
                         val name = binding.itemTitle.value
