@@ -3,6 +3,7 @@ package org.fossify.filemanager.dialogs
 import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.extensions.getAlertDialogBuilder
 import org.fossify.commons.extensions.setupDialogStuff
+import org.fossify.filemanager.helpers.applyTcButtonColors
 import org.fossify.commons.helpers.TAB_FILES
 import org.fossify.commons.helpers.TAB_RECENT_FILES
 import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
@@ -32,7 +33,7 @@ class ManageVisibleTabsDialog(val activity: BaseSimpleActivity) {
             .setPositiveButton(R.string.ok) { dialog, which -> dialogConfirmed() }
             .setNegativeButton(R.string.cancel, null)
             .apply {
-                activity.setupDialogStuff(binding.root, this)
+                activity.setupDialogStuff(binding.root, this) { it.applyTcButtonColors() }
             }
     }
 

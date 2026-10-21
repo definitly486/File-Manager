@@ -1,5 +1,6 @@
 package org.fossify.filemanager.dialogs
 
+import org.fossify.filemanager.helpers.applyTcButtonColors
 import androidx.appcompat.app.AlertDialog
 import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.extensions.*
@@ -17,6 +18,7 @@ class InsertFilenameDialog(
             .setNegativeButton(R.string.cancel, null)
             .apply {
                 activity.setupDialogStuff(binding.root, this, R.string.filename) { alertDialog ->
+                    alertDialog.applyTcButtonColors()
                     alertDialog.showKeyboard(binding.insertFilenameTitle)
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                         val filename = binding.insertFilenameTitle.value

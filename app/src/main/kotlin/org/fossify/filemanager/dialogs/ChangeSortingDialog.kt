@@ -4,6 +4,7 @@ import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.extensions.getAlertDialogBuilder
 import org.fossify.commons.extensions.setupDialogStuff
+import org.fossify.filemanager.helpers.applyTcButtonColors
 import org.fossify.commons.helpers.*
 import org.fossify.filemanager.R
 import org.fossify.filemanager.databinding.DialogChangeSortingBinding
@@ -27,7 +28,7 @@ class ChangeSortingDialog(val activity: BaseSimpleActivity, val path: String = "
             .setPositiveButton(R.string.ok) { dialog, which -> dialogConfirmed() }
             .setNegativeButton(R.string.cancel, null)
             .apply {
-                activity.setupDialogStuff(binding.root, this, R.string.sort_by)
+                activity.setupDialogStuff(binding.root, this, R.string.sort_by) { it.applyTcButtonColors() }
             }
 
         setupSortRadio()
