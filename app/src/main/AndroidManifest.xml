@@ -18,6 +18,9 @@
     <uses-permission
         android:name="android.permission.NEARBY_WIFI_DEVICES"
         android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature
         android:name="android.hardware.faketouch"
@@ -173,7 +176,13 @@
             android:name=".activities.WifiDirectActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
-            android:label="@string/wifi_direct_title_send" />
+            android:label="@string/wifi_direct_title_send"
+            android:launchMode="singleTop" />
+
+        <service
+            android:name=".services.WifiDirectService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
 
         <activity
             android:name=".activities.FavoritesActivity"

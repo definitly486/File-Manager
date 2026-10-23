@@ -97,4 +97,9 @@
     <string name="wifi_direct_status_invited">приглашено</string>
     <string name="wifi_direct_status_connected">подключено</string>
     <string name="wifi_direct_status_unavailable">недоступно</string>
+    <string name="wifi_direct_cancel">Отмена</string>
+    <string name="wifi_direct_hide">Продолжить в фоне</string>
+    <string name="wifi_direct_cancelled">Отменено</string>
+    <string name="wifi_direct_timeout">Время ожидания второго устройства истекло</string>
+    <string name="wifi_direct_channel_name">Передача по Wi-Fi Direct</string>
 </resources>

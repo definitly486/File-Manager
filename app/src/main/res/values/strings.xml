@@ -113,4 +113,9 @@
     <string name="wifi_direct_status_invited">invited</string>
     <string name="wifi_direct_status_connected">connected</string>
     <string name="wifi_direct_status_unavailable">unavailable</string>
+    <string name="wifi_direct_cancel">Cancel</string>
+    <string name="wifi_direct_hide">Continue in background</string>
+    <string name="wifi_direct_cancelled">Cancelled</string>
+    <string name="wifi_direct_timeout">Timed out waiting for the other device</string>
+    <string name="wifi_direct_channel_name">Wi-Fi Direct transfers</string>
 </resources>
