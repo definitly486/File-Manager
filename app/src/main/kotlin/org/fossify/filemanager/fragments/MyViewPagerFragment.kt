@@ -12,6 +12,7 @@ import org.fossify.filemanager.activities.MainActivity
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.activities.VideoPlayerActivity
 import org.fossify.filemanager.activities.ImageViewerActivity
+import org.fossify.filemanager.activities.PdfViewerActivity
 import org.fossify.filemanager.databinding.ItemsFragmentBinding
 import org.fossify.filemanager.databinding.RecentsFragmentBinding
 import org.fossify.filemanager.databinding.StorageFragmentBinding
@@ -47,6 +48,9 @@ abstract class MyViewPagerFragment<BINDING : MyViewPagerFragment.InnerBinding>(c
         } else if (path.getMimeType().startsWith("image/", ignoreCase = true)) {
             // Built-in image viewer
             activity?.let { ImageViewerActivity.start(it, path) }
+        } else if (path.endsWith(".pdf", ignoreCase = true)) {
+            // Built-in PDF viewer
+            activity?.let { PdfViewerActivity.start(it, path) }
         } else {
             activity?.tryOpenPathIntent(path, false)
         }
