@@ -93,6 +93,7 @@ import org.fossify.commons.views.MyRecyclerView
 import org.fossify.filemanager.R
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.activities.SplashActivity
+import org.fossify.filemanager.activities.WifiDirectActivity
 import org.fossify.filemanager.databinding.ItemDirGridBinding
 import org.fossify.filemanager.databinding.ItemEmptyBinding
 import org.fossify.filemanager.databinding.ItemFileDirListBinding
@@ -207,6 +208,7 @@ class ItemsAdapter(
             R.id.cab_rename -> displayRenameDialog()
             R.id.cab_properties -> showProperties()
             R.id.cab_share -> shareFiles()
+            R.id.cab_share_wifi_direct -> shareViaWifiDirect()
             R.id.cab_hide -> toggleFileVisibility(true)
             R.id.cab_unhide -> toggleFileVisibility(false)
             R.id.cab_create_shortcut -> createShortcut()
@@ -398,6 +400,7 @@ class ItemsAdapter(
             actionItemPressed(menuItem.itemId)
             when (menuItem.itemId) {
                 R.id.cab_share,
+                R.id.cab_share_wifi_direct,
                 R.id.cab_open_with,
                 R.id.cab_set_as,
                 R.id.cab_create_shortcut -> finishActMode()
@@ -507,6 +510,14 @@ class ItemsAdapter(
             addFileUris(it.path, paths)
         }
         activity.sharePaths(paths)
+    }
+
+    private fun shareViaWifiDirect() {
+        val paths = ArrayList<String>(getSelectedFileDirItems().map { it.path })
+        activity.startActivity(
+            Intent(activity, WifiDirectActivity::class.java)
+                .putStringArrayListExtra(WifiDirectActivity.EXTRA_PATHS, paths)
+        )
     }
 
     private fun toggleFileVisibility(hide: Boolean) {

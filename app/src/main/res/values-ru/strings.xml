@@ -70,4 +70,31 @@
     <string name="swap_selection">Поменять выделение</string>
     <string name="video_play_error">Не удаётся воспроизвести видео, открываю в другом приложении</string>
     <string name="video_volume">Громкость: %1$d%%</string>
+
+    <!-- Wi-Fi Direct -->
+    <string name="share_wifi_direct">Поделиться через Wi-Fi Direct</string>
+    <string name="receive_wifi_direct">Принять через Wi-Fi Direct</string>
+    <string name="wifi_direct_title_send">Отправка через Wi-Fi Direct</string>
+    <string name="wifi_direct_title_receive">Приём через Wi-Fi Direct</string>
+    <string name="wifi_direct_close">Закрыть</string>
+    <string name="wifi_direct_unsupported">Это устройство не поддерживает Wi-Fi Direct</string>
+    <string name="wifi_direct_permission_denied">Нет разрешения. Для Wi-Fi Direct нужен доступ к устройствам поблизости (на Android 12 и ниже — к геолокации)</string>
+    <string name="wifi_direct_turn_on_wifi">Включите Wi-Fi (и геолокацию на Android 12 и ниже) и повторите</string>
+    <string name="wifi_direct_busy">Wi-Fi Direct занят, повторите чуть позже</string>
+    <string name="wifi_direct_no_files">Нет файлов для отправки</string>
+    <string name="wifi_direct_searching">Поиск устройств поблизости. На втором телефоне выберите в меню «Принять через Wi-Fi Direct»</string>
+    <string name="wifi_direct_waiting">Ожидание отправителя. На другом телефоне выберите «Поделиться через Wi-Fi Direct» и нажмите на это устройство. Подтвердите запрос на подключение</string>
+    <string name="wifi_direct_pick_device">Нажмите на устройство, чтобы отправить</string>
+    <string name="wifi_direct_connecting">Подключение к %1$s…</string>
+    <string name="wifi_direct_connect_failed">Не удалось подключиться, повторите</string>
+    <string name="wifi_direct_connected">Подключено</string>
+    <string name="wifi_direct_sending">Отправка %1$d из %2$d: %3$s</string>
+    <string name="wifi_direct_receiving">Приём %1$d из %2$d: %3$s</string>
+    <string name="wifi_direct_done_send">Отправлено файлов: %1$d</string>
+    <string name="wifi_direct_done_receive">Получено файлов: %1$d, папка %2$s</string>
+    <string name="wifi_direct_error">Ошибка: %1$s</string>
+    <string name="wifi_direct_status_available">доступно</string>
+    <string name="wifi_direct_status_invited">приглашено</string>
+    <string name="wifi_direct_status_connected">подключено</string>
+    <string name="wifi_direct_status_unavailable">недоступно</string>
 </resources>

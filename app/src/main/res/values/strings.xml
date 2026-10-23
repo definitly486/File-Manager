@@ -86,4 +86,31 @@
     <string name="tc_menu_theme_to_dark">Light -&gt; Dark</string>
     <string name="tc_menu_theme_to_light">Dark -&gt; Light</string>
     <string name="tc_menu_help">Help (HTML)</string>
+
+    <!-- Wi-Fi Direct -->
+    <string name="share_wifi_direct">Share via Wi-Fi Direct</string>
+    <string name="receive_wifi_direct">Receive via Wi-Fi Direct</string>
+    <string name="wifi_direct_title_send">Send via Wi-Fi Direct</string>
+    <string name="wifi_direct_title_receive">Receive via Wi-Fi Direct</string>
+    <string name="wifi_direct_close">Close</string>
+    <string name="wifi_direct_unsupported">This device does not support Wi-Fi Direct</string>
+    <string name="wifi_direct_permission_denied">Permission denied. Wi-Fi Direct needs the nearby devices permission (location on Android 12 and older)</string>
+    <string name="wifi_direct_turn_on_wifi">Turn on Wi-Fi (and location on Android 12 and older) and try again</string>
+    <string name="wifi_direct_busy">Wi-Fi Direct is busy, try again in a moment</string>
+    <string name="wifi_direct_no_files">No files to send</string>
+    <string name="wifi_direct_searching">Searching for nearby devices. On the other phone choose \"Receive via Wi-Fi Direct\" in the menu</string>
+    <string name="wifi_direct_waiting">Waiting for the sender. On the other phone choose \"Share via Wi-Fi Direct\" and tap this device. Accept the connection request when it appears</string>
+    <string name="wifi_direct_pick_device">Tap a device to send</string>
+    <string name="wifi_direct_connecting">Connecting to %1$s…</string>
+    <string name="wifi_direct_connect_failed">Connection failed, try again</string>
+    <string name="wifi_direct_connected">Connected</string>
+    <string name="wifi_direct_sending">Sending %1$d of %2$d: %3$s</string>
+    <string name="wifi_direct_receiving">Receiving %1$d of %2$d: %3$s</string>
+    <string name="wifi_direct_done_send">Sent %1$d file(s)</string>
+    <string name="wifi_direct_done_receive">Received %1$d file(s) in %2$s</string>
+    <string name="wifi_direct_error">Error: %1$s</string>
+    <string name="wifi_direct_status_available">available</string>
+    <string name="wifi_direct_status_invited">invited</string>
+    <string name="wifi_direct_status_connected">connected</string>
+    <string name="wifi_direct_status_unavailable">unavailable</string>
 </resources>

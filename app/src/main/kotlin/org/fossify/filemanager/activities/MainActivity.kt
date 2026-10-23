@@ -305,6 +305,9 @@ class MainActivity : SimpleActivity() {
         if (canCreateFolder) {
             entries += getString(R.string.tc_menu_new_folder) to { getItemsFragment().createNewFolder() }
         }
+        entries += getString(R.string.receive_wifi_direct) to {
+            startActivity(Intent(this, WifiDirectActivity::class.java))
+        }
         entries += getString(R.string.tc_menu_settings) to { launchSettings() }
         entries += getString(if (light) R.string.tc_menu_theme_to_dark else R.string.tc_menu_theme_to_light) to {
             toggleTcTheme()

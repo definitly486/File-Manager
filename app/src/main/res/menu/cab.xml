@@ -33,6 +33,11 @@
         android:title="@string/share"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/cab_share_wifi_direct"
+        android:showAsAction="never"
+        android:title="@string/share_wifi_direct"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/cab_hide"
         android:icon="@drawable/ic_hide_vector"
         android:title="@string/hide"
