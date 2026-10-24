@@ -14,7 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.TextView
-import org.fossify.commons.dialogs.ConfirmationAdvancedDialog
+import org.fossify.filemanager.dialogs.TcConfirmationAdvancedDialog
 import org.fossify.commons.extensions.*
 import org.fossify.commons.helpers.NavigationIcon
 import org.fossify.commons.helpers.REAL_FILE_PATH
@@ -128,7 +128,7 @@ class ReadTextActivity : SimpleActivity() {
             }
             hasUnsavedChanges && System.currentTimeMillis() - lastSavePromptTS > SAVE_DISCARD_PROMPT_INTERVAL -> {
                 lastSavePromptTS = System.currentTimeMillis()
-                ConfirmationAdvancedDialog(this, "", R.string.save_before_closing, R.string.save, R.string.discard) {
+                TcConfirmationAdvancedDialog(this, "", R.string.save_before_closing, R.string.save, R.string.discard) {
                     if (it) {
                         saveText(true)
                     } else {

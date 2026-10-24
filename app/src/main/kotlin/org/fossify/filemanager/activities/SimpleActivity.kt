@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Environment
 import android.provider.Settings
 import org.fossify.commons.activities.BaseSimpleActivity
-import org.fossify.commons.dialogs.ConfirmationAdvancedDialog
+import org.fossify.filemanager.dialogs.TcConfirmationAdvancedDialog
 import org.fossify.commons.extensions.hasPermission
 import android.net.Uri
 import org.fossify.commons.extensions.showErrorToast
@@ -70,7 +70,7 @@ open class SimpleActivity : BaseSimpleActivity() {
             callback(true)
         } else {
             if (isRPlus()) {
-                ConfirmationAdvancedDialog(this, "", R.string.access_storage_prompt, R.string.ok, 0, false) { success ->
+                TcConfirmationAdvancedDialog(this, "", R.string.access_storage_prompt, R.string.ok, 0, false) { success ->
                     if (success) {
                         isAskingPermissions = true
                         actionOnPermission = callback
