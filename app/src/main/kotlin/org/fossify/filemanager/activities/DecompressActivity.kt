@@ -20,6 +20,7 @@ import org.fossify.commons.extensions.isGone
 import org.fossify.commons.extensions.showErrorToast
 import org.fossify.commons.extensions.toast
 import org.fossify.commons.extensions.viewBinding
+import org.fossify.filemanager.helpers.applyTcPickerStyle
 import org.fossify.commons.helpers.NavigationIcon
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.filemanager.R
@@ -128,7 +129,7 @@ class DecompressActivity : SimpleActivity() {
 
     private fun decompressFiles() {
         val defaultFolder = getRealPathFromURI(uri!!) ?: internalStoragePath
-        FilePickerDialog(
+        val picker = FilePickerDialog(
             activity = this,
             currPath = defaultFolder,
             pickFile = false,
@@ -145,6 +146,8 @@ class DecompressActivity : SimpleActivity() {
                 }
             }
         }
+        // White buttons and yellow folders in the dark theme
+        picker.applyTcPickerStyle()
     }
 
     private fun decompressTo(destination: String) {
