@@ -84,6 +84,7 @@ import org.fossify.commons.extensions.toFileDirItem
 import org.fossify.commons.extensions.toast
 import org.fossify.commons.helpers.CONFLICT_OVERWRITE
 import org.fossify.commons.helpers.CONFLICT_SKIP
+import org.fossify.commons.helpers.REAL_FILE_PATH
 import org.fossify.commons.helpers.VIEW_TYPE_LIST
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.getFilePlaceholderDrawables
@@ -91,6 +92,7 @@ import org.fossify.commons.models.FileDirItem
 import org.fossify.commons.models.RadioItem
 import org.fossify.commons.views.MyRecyclerView
 import org.fossify.filemanager.R
+import org.fossify.filemanager.activities.ReadTextActivity
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.activities.SplashActivity
 import org.fossify.filemanager.activities.WifiDirectActivity
@@ -191,6 +193,7 @@ class ItemsAdapter(
             findItem(R.id.cab_copy_path).isVisible = isOneItemSelected()
             findItem(R.id.cab_open_with).isVisible = isOneFileSelected()
             findItem(R.id.cab_open_as).isVisible = isOneFileSelected()
+            findItem(R.id.cab_edit_file).isVisible = isOneFileSelected()
             findItem(R.id.cab_set_as).isVisible = isOneFileSelected()
             findItem(R.id.cab_create_shortcut).isVisible = isOneItemSelected()
 
@@ -216,6 +219,7 @@ class ItemsAdapter(
             R.id.cab_set_as -> setAs()
             R.id.cab_open_with -> openWith()
             R.id.cab_open_as -> openAs()
+            R.id.cab_edit_file -> editFile()
             R.id.cab_copy_to -> copyMoveTo(true)
             R.id.cab_move_to -> tryMoveFiles()
             R.id.cab_compress -> compressSelection()
@@ -402,6 +406,7 @@ class ItemsAdapter(
                 R.id.cab_share,
                 R.id.cab_share_wifi_direct,
                 R.id.cab_open_with,
+                R.id.cab_edit_file,
                 R.id.cab_set_as,
                 R.id.cab_create_shortcut -> finishActMode()
             }
@@ -647,6 +652,16 @@ class ItemsAdapter(
 
     private fun openWith() {
         activity.tryOpenPathIntent(getFirstSelectedItemPath(), true)
+    }
+
+    /**
+     * Open the selected file in the built-in text editor.
+     */
+    private fun editFile() {
+        val intent = Intent(activity, ReadTextActivity::class.java).apply {
+            putExtra(REAL_FILE_PATH, getFirstSelectedItemPath())
+        }
+        activity.startActivity(intent)
     }
 
     private fun openAs() {

@@ -89,6 +89,7 @@
 
     <!-- Wi-Fi Direct -->
     <string name="share_wifi_direct">Share via Wi-Fi Direct</string>
+    <string name="edit_file">Edit file</string>
     <string name="receive_wifi_direct">Receive via Wi-Fi Direct</string>
     <string name="wifi_direct_title_send">Send via Wi-Fi Direct</string>
     <string name="wifi_direct_title_receive">Receive via Wi-Fi Direct</string>

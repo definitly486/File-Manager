@@ -68,6 +68,11 @@
         android:title="@string/open_with"
         app:showAsAction="never" />
     <item
+        android:id="@+id/cab_edit_file"
+        android:showAsAction="never"
+        android:title="@string/edit_file"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/cab_open_as"
         android:showAsAction="never"
         android:title="@string/open_as"

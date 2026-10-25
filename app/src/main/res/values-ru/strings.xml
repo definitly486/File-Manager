@@ -73,6 +73,7 @@
 
     <!-- Wi-Fi Direct -->
     <string name="share_wifi_direct">Поделиться через Wi-Fi Direct</string>
+    <string name="edit_file">Редактировать файл</string>
     <string name="receive_wifi_direct">Принять через Wi-Fi Direct</string>
     <string name="wifi_direct_title_send">Отправка через Wi-Fi Direct</string>
     <string name="wifi_direct_title_receive">Приём через Wi-Fi Direct</string>
