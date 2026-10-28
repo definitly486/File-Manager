@@ -39,6 +39,7 @@ import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.EncryptionMethod
 import org.fossify.commons.adapters.MyRecyclerViewAdapter
 import org.fossify.filemanager.dialogs.TcConfirmationDialog
+import org.fossify.filemanager.helpers.applyTcPickerStyle
 import org.fossify.commons.dialogs.FilePickerDialog
 import org.fossify.commons.dialogs.PropertiesDialog
 import org.fossify.commons.dialogs.RadioGroupDialog
@@ -689,7 +690,7 @@ class ItemsAdapter(
         val files = getSelectedFileDirItems()
         val firstFile = files[0]
         val source = firstFile.getParentPath()
-        FilePickerDialog(
+        val picker = FilePickerDialog(
             activity = activity,
             currPath = activity.getDefaultCopyDestinationPath(config.shouldShowHidden(), source),
             pickFile = false,
@@ -752,6 +753,8 @@ class ItemsAdapter(
                 }
             }
         }
+        // Style the destination picker used by both “Copy to” and “Move to”.
+        picker.applyTcPickerStyle()
     }
 
     private fun copyMoveRootItems(
