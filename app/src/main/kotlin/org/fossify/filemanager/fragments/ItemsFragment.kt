@@ -17,7 +17,6 @@ import org.fossify.commons.views.MyGridLayoutManager
 import org.fossify.commons.views.MyRecyclerView
 import org.fossify.filemanager.R
 import org.fossify.filemanager.activities.MainActivity
-import org.fossify.filemanager.activities.PdfViewerActivity
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.adapters.ItemsAdapter
 import org.fossify.filemanager.databinding.ItemsFragmentBinding
@@ -354,10 +353,6 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             else -> {
                 if (item.isDirectory) {
                     openDirectory(item.path)
-                } else if (item.path.endsWith(".pdf", ignoreCase = true)) {
-                    // Open PDF files in the built-in viewer instead of relying on an
-                    // external PDF application being installed.
-                    activity?.let { PdfViewerActivity.start(it, item.path) }
                 } else {
                     clickedPath(item.path)
                 }
