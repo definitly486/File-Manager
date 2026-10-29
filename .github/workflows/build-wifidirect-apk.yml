@@ -54,7 +54,7 @@ jobs:
         path: dist/*.apk
 
     - name: Publish GitHub pre-release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: ${{ github.ref_name }}-${{ github.run_number }}
         name: ${{ github.ref_name }} build ${{ github.run_number }}
