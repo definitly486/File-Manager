@@ -1,17 +1,14 @@
-name: Release
+# Disabled: this called FossifyOrg's reusable release workflow, which needs the
+# Fossify bot GitHub App credentials (create-github-app-token) and Google Play secrets.
+# Releases for this repository are built by release-main.yml instead.
+name: Release (Fossify, disabled)
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - ".fossify/release-marker.txt"
+  workflow_dispatch:
 
 jobs:
-  call-release-workflow:
-    name: Release
-    uses: FossifyOrg/.github/.github/workflows/release.yml@main
-    with:
-      track: ${{ vars.GPLAY_TRACK || 'beta' }}
-      rollout: ${{ vars.GPLAY_ROLLOUT || '0.05' }}
-      validate_only: ${{ vars.GPLAY_DRY_RUN == 'true' }}
-    secrets: inherit
+  disabled:
+    name: Disabled
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Use release-main.yml. The Fossify release workflow is disabled in this repository."

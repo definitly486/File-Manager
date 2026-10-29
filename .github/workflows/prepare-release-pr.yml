@@ -1,15 +1,14 @@
-name: Prepare Release PR
+# Disabled: this called FossifyOrg's reusable workflow, which needs the Fossify bot
+# GitHub App credentials (create-github-app-token). Releases for this repository are
+# built by release-main.yml instead.
+name: Prepare Release PR (Fossify, disabled)
 
 on:
-  repository_dispatch:
-    types: [prepare-release]
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "CHANGELOG.md"
 
 jobs:
-  call-release-pr:
-    uses: FossifyOrg/.github/.github/workflows/prepare-release-pr.yml@main
-    secrets: inherit
+  disabled:
+    name: Disabled
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "The Fossify release PR workflow is disabled in this repository."
