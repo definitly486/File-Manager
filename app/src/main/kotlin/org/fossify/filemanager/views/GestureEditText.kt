@@ -61,23 +61,68 @@ class GestureEditText : AppCompatEditText, GestureView {
 
     override fun getController() = controller
 
+    // Primitive state only: onSelectionChanged() can be called from the super constructor.
+    private var lastSelectionTime = 0L
+    private var lastSelectionTextLength = -1
+    private var selectionRetried = false
+    private var gestureInProgress = false
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        // 1. Let EditText handle the event first (selection / long-press / cursor).
+        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+            selectionRetried = false
+            lastSelectionTime = 0L
+        }
+
+        // Let EditText handle the event first (selection / long-press / cursor).
         val handled = super.onTouchEvent(event)
 
-        // 2. Prevent GestureController from enabling its own long-press detector.
-        //    It sets gestureDetector.setIsLongpressEnabled(view.isLongClickable())
-        //    on every touch. On Android 15 this still races with TextView selection
-        //    and cancels the first long-press highlight. Temporarily force it off.
-        val wasLongClickable = isLongClickable
-        isLongClickable = false
-        try {
-            controller.onTouch(this, event)
-        } finally {
-            isLongClickable = wasLongClickable
+        // The gesture controller is only needed for pinch-to-zoom. Feeding it single-finger
+        // touches interferes with the text selection that starts on the first long-press,
+        // so it only receives multi-touch gestures.
+        if (event.pointerCount > 1) {
+            gestureInProgress = true
+        }
+
+        if (gestureInProgress) {
+            // GestureController enables its own long-press detector from isLongClickable on
+            // every touch; keep it off so it can't compete with TextView's selection.
+            val wasLongClickable = isLongClickable
+            isLongClickable = false
+            try {
+                controller.onTouch(this, event)
+            } finally {
+                isLongClickable = wasLongClickable
+            }
+
+            if (event.actionMasked == MotionEvent.ACTION_UP || event.actionMasked == MotionEvent.ACTION_CANCEL) {
+                gestureInProgress = false
+            }
         }
 
         return handled
+    }
+
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        super.onSelectionChanged(selStart, selEnd)
+        if (selStart != selEnd) {
+            lastSelectionTime = System.currentTimeMillis()
+            lastSelectionTextLength = text?.length ?: -1
+        } else if (lastSelectionTime != 0L && !selectionRetried) {
+            // A selection that was just created by a long-press collapsed by itself, without the
+            // user touching the screen again (the keyboard showing / layout changing on the first
+            // attempt cancels it). Repeat the long-press, which is what a second attempt does.
+            val age = System.currentTimeMillis() - lastSelectionTime
+            lastSelectionTime = 0L
+            // Typing over the selection also collapses it; that must not trigger a retry.
+            if (age < 1500 && lastSelectionTextLength == (text?.length ?: -1)) {
+                selectionRetried = true
+                postDelayed({
+                    if (isAttachedToWindow && !hasSelection()) {
+                        performLongClick()
+                    }
+                }, 350)
+            }
+        }
     }
 
     override fun setTextSize(size: Float) {
