@@ -321,7 +321,12 @@ class ReadTextActivity : SimpleActivity() {
 
             binding.readTextView.setText(textToSet)
             if (originalText.isNotEmpty()) {
+                // Take focus up front. Otherwise the first long-press gives the editor focus
+                // mid-gesture, which pops up the keyboard, resizes the view and cancels the
+                // freshly started text selection (it only worked on the second attempt).
+                binding.readTextView.requestFocus()
                 hideKeyboard()
+                binding.readTextView.post { hideKeyboard() }
             } else {
                 showKeyboard(binding.readTextView)
             }

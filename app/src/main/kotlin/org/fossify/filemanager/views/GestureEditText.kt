@@ -95,7 +95,11 @@ class GestureEditText : AppCompatEditText, GestureView {
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         controller.settings.setViewport(width, height).setImage(width, height)
-        controller.updateState()
+        // Height-only changes (keyboard showing/hiding) must not touch the gesture state,
+        // otherwise an in-progress text selection can be dismissed.
+        if (width != oldWidth) {
+            controller.updateState()
+        }
     }
 
     private fun applyState(state: State) {
