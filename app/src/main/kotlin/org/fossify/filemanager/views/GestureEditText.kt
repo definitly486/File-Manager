@@ -54,8 +54,12 @@ class GestureEditText : AppCompatEditText, GestureView {
     override fun getController() = controller
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        // Let EditText process the event first. Its long-press gesture recognizer
+        // manages text selection; processing the same event in GestureController
+        // beforehand can cancel the first selection attempt.
+        val handled = super.onTouchEvent(event)
         controller.onTouch(this, event)
-        return super.onTouchEvent(event)
+        return handled
     }
 
     override fun setTextSize(size: Float) {
