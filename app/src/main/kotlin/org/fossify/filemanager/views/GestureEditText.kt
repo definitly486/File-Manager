@@ -62,12 +62,21 @@ class GestureEditText : AppCompatEditText, GestureView {
     override fun getController() = controller
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        // Process in EditText first so its long-press / selection gesture
-        // (especially critical on Android 15) is not cancelled by the
-        // GestureController's detectors. Zoom/pan gestures still work
-        // because the controller receives the same event afterwards.
+        // 1. Let EditText handle the event first (selection / long-press / cursor).
         val handled = super.onTouchEvent(event)
-        controller.onTouch(this, event)
+
+        // 2. Prevent GestureController from enabling its own long-press detector.
+        //    It sets gestureDetector.setIsLongpressEnabled(view.isLongClickable())
+        //    on every touch. On Android 15 this still races with TextView selection
+        //    and cancels the first long-press highlight. Temporarily force it off.
+        val wasLongClickable = isLongClickable
+        isLongClickable = false
+        try {
+            controller.onTouch(this, event)
+        } finally {
+            isLongClickable = wasLongClickable
+        }
+
         return handled
     }
 
