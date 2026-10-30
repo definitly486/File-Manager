@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
+import android.view.ViewConfiguration
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
 import com.alexvasilkov.gestures.GestureController
 import com.alexvasilkov.gestures.State
@@ -47,6 +49,11 @@ class GestureEditText : AppCompatEditText, GestureView {
         })
 
         origSize = textSize
+        // TextView shows the keyboard right after a long-press selection starts. The keyboard
+        // animation resizes the window and cancels that fresh selection (seen in the logs:
+        // showSoftInput() 57 ms after the selection started), so it only worked on the second try,
+        // when the keyboard was already up. The keyboard is shown manually on a plain tap instead.
+        setShowSoftInputOnFocus(false)
         setTextColor(context.getProperTextColor())
         setLinkTextColor(context.getProperPrimaryColor())
 
@@ -66,15 +73,41 @@ class GestureEditText : AppCompatEditText, GestureView {
     private var lastSelectionTextLength = -1
     private var selectionRetried = false
     private var gestureInProgress = false
+    private var longPressed = false
+    private var moved = false
+    private var downX = 0f
+    private var downY = 0f
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-            selectionRetried = false
-            lastSelectionTime = 0L
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                selectionRetried = false
+                lastSelectionTime = 0L
+                longPressed = false
+                moved = false
+                downX = event.x
+                downY = event.y
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                val slop = ViewConfiguration.get(context).scaledTouchSlop
+                if (Math.abs(event.x - downX) > slop || Math.abs(event.y - downY) > slop) {
+                    moved = true
+                }
+            }
         }
 
         // Let EditText handle the event first (selection / long-press / cursor).
         val handled = super.onTouchEvent(event)
+
+        // Plain tap that placed the cursor: show the keyboard (not done for long-press/double-tap
+        // selections, as the resize would cancel them).
+        if (event.actionMasked == MotionEvent.ACTION_UP && !longPressed && !moved &&
+            event.pointerCount == 1 && !gestureInProgress && isFocused && !hasSelection()
+        ) {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.showSoftInput(this, 0)
+        }
 
         // The gesture controller is only needed for pinch-to-zoom. Feeding it single-finger
         // touches interferes with the text selection that starts on the first long-press,
@@ -100,6 +133,11 @@ class GestureEditText : AppCompatEditText, GestureView {
         }
 
         return handled
+    }
+
+    override fun performLongClick(): Boolean {
+        longPressed = true
+        return super.performLongClick()
     }
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
