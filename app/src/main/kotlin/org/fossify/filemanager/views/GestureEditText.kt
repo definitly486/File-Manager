@@ -22,7 +22,15 @@ class GestureEditText : AppCompatEditText, GestureView {
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
-    private val controller: GestureController = GestureController(this)
+    private val controller: GestureController = object : GestureController(this) {
+        // EditText has its own long-press handling for text selection. The gesture
+        // controller's default implementation calls performLongClick() as well,
+        // which competes with TextView's selection gesture and can dismiss the
+        // selection on the first attempt.
+        override fun onLongPress(event: MotionEvent) {
+            // Keep long-press handling exclusively in AppCompatEditText.
+        }
+    }
     private var origSize = 0f
     private var size = 0f
 
@@ -54,12 +62,8 @@ class GestureEditText : AppCompatEditText, GestureView {
     override fun getController() = controller
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        // Let EditText process the event first. Its long-press gesture recognizer
-        // manages text selection; processing the same event in GestureController
-        // beforehand can cancel the first selection attempt.
-        val handled = super.onTouchEvent(event)
         controller.onTouch(this, event)
-        return handled
+        return super.onTouchEvent(event)
     }
 
     override fun setTextSize(size: Float) {
