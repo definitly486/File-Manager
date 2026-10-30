@@ -33,7 +33,9 @@ android {
         applicationId = project.property("APP_ID").toString()
         minSdk = project.libs.versions.app.build.minimumSDK.get().toInt()
         targetSdk = project.libs.versions.app.build.targetSDK.get().toInt()
-        versionName = project.property("VERSION_NAME").toString()
+        // CI passes -PBUILD_NUMBER=<run number>, so the app shows the same version as the APK name (1.6.1-8)
+        val buildNumber = project.findProperty("BUILD_NUMBER")?.toString()?.takeIf { it.isNotBlank() }
+        versionName = project.property("VERSION_NAME").toString() + (buildNumber?.let { "-$it" } ?: "")
         versionCode = project.property("VERSION_CODE").toString().toInt()
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true

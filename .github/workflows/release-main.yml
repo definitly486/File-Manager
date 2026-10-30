@@ -73,11 +73,11 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: ./gradlew assembleFossRelease --no-daemon
+        run: ./gradlew assembleFossRelease --no-daemon -PBUILD_NUMBER=${{ github.run_number }}
 
       - name: Build release APK (debug keystore)
         if: steps.keystore.outputs.enabled != 'true'
-        run: ./gradlew assembleFossRelease --no-daemon
+        run: ./gradlew assembleFossRelease --no-daemon -PBUILD_NUMBER=${{ github.run_number }}
 
       - name: Collect APK
         run: |
