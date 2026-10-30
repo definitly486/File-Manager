@@ -62,8 +62,13 @@ class GestureEditText : AppCompatEditText, GestureView {
     override fun getController() = controller
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        // Process in EditText first so its long-press / selection gesture
+        // (especially critical on Android 15) is not cancelled by the
+        // GestureController's detectors. Zoom/pan gestures still work
+        // because the controller receives the same event afterwards.
+        val handled = super.onTouchEvent(event)
         controller.onTouch(this, event)
-        return super.onTouchEvent(event)
+        return handled
     }
 
     override fun setTextSize(size: Float) {
