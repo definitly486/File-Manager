@@ -171,7 +171,6 @@ class ItemsAdapter(
         private const val TYPE_DIR = 2
         private const val TYPE_SECTION = 3
         private const val TYPE_GRID_TYPE_DIVIDER = 4
-        private const val SELECTION_CHECK_COLOR = 0xFF00C853.toInt()
         private const val DIR_LABEL = "<dir>"
     }
 
@@ -1287,9 +1286,12 @@ class ItemsAdapter(
                 val showCheck = isSelected && listItem.children != -1
                 itemCheck?.beVisibleIf(showCheck)
                 if (showCheck) {
-                    // Green check mark drawn over the icon, without the round background
-                    itemCheck?.background = null
-                    itemCheck?.applyColorFilter(SELECTION_CHECK_COLOR)
+                    // High-contrast white check inside a bright green circular badge.
+                    itemCheck?.apply {
+                        background = activity.getDrawable(R.drawable.selection_check_background)
+                        setColorFilter(android.graphics.Color.WHITE)
+                        elevation = resources.getDimension(R.dimen.small_margin)
+                    }
                 }
 
                 if (!isListViewType && !listItem.isDirectory) {
@@ -1658,7 +1660,7 @@ class ItemsAdapter(
         override val itemIcon: ImageView = binding.itemIcon
         override val itemDetails: TextView? = null
         override val itemDate: TextView? = null
-        override val itemCheck: ImageView? = null
+        override val itemCheck: ImageView = binding.itemCheck
         override val itemSection: TextView? = null
 
         override fun getRoot(): View = binding.root
