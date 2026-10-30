@@ -107,8 +107,13 @@ class GestureEditText : AppCompatEditText, GestureView {
         val maxSize = origSize * controller.stateController.getMaxZoom(state)
         size = Math.max(origSize, Math.min(size, maxSize))
 
-        size = Math.round(size).toFloat()
-        if (!State.equals(this.size, size)) {
+        // Don't round (and thus don't change) the size at the default zoom level.
+        size = if (State.equals(state.zoom, 1f)) origSize else Math.round(size).toFloat()
+
+        // Compare against the real current text size. Previously the cached value started at 0,
+        // so the very first gesture state change (the first touch) called setTextSize() even though
+        // nothing had changed. That re-laid out the text and cancelled the just-started selection.
+        if (!State.equals(textSize, size)) {
             this.size = size
             super.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
             context.config.editorTextZoom = state.zoom
