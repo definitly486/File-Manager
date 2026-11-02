@@ -27,13 +27,13 @@
 
         <ImageView
             android:id="@+id/item_check"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/selection_check_background"
             android:contentDescription="@null"
             android:elevation="4dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_check_vector"
+            android:padding="7dp"
+            android:src="@drawable/ic_bold_green_check"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/item_icon"
             app:layout_constraintTop_toTopOf="@id/item_icon" />
