@@ -1286,10 +1286,10 @@ class ItemsAdapter(
                 val showCheck = isSelected && listItem.children != -1
                 itemCheck?.beVisibleIf(showCheck)
                 if (showCheck) {
-                    // High-contrast white check inside a bright green circular badge.
+                    // Bold green check on a white badge for strong contrast in list and grid views.
                     itemCheck?.apply {
                         background = activity.getDrawable(R.drawable.selection_check_background)
-                        setColorFilter(android.graphics.Color.WHITE)
+                        setColorFilter(android.graphics.Color.rgb(0, 200, 83))
                         elevation = resources.getDimension(R.dimen.small_margin)
                     }
                 }
