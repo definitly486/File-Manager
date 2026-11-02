@@ -29,7 +29,6 @@
             android:id="@+id/item_check"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/selection_check_background"
             android:contentDescription="@null"
             android:elevation="4dp"
             android:padding="7dp"
