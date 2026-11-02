@@ -48,7 +48,6 @@
             android:layout_alignEnd="@+id/item_icon"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/small_margin"
-            android:background="@drawable/selection_check_background"
             android:contentDescription="@null"
             android:elevation="4dp"
             android:padding="7dp"
