@@ -217,7 +217,6 @@ class ItemsAdapter(
             R.id.cab_unhide -> toggleFileVisibility(false)
             R.id.cab_create_shortcut -> createShortcut()
             R.id.cab_copy_path -> copyPath()
-            R.id.cab_copy_to_clipboard -> copySelectionToInternalClipboard()
             R.id.cab_set_as -> setAs()
             R.id.cab_open_with -> openWith()
             R.id.cab_open_as -> openAs()
