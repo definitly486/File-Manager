@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
@@ -1062,7 +1063,9 @@ class MainActivity : SimpleActivity() {
     }
 
     fun setPendingCopyItems(items: ArrayList<FileDirItem>) {
+        Log.d("FileManagerPaste", "Setting internal file clipboard: count=${items.size}, paths=${items.joinToString(limit = 10) { it.path }}")
         pendingCopyItems = ArrayList(items)
+        Log.d("FileManagerPaste", "Internal file clipboard updated: count=${pendingCopyItems.size}")
         toast(R.string.files_copied_to_clipboard)
     }
 
