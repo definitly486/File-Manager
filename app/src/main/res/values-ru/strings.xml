@@ -103,7 +103,7 @@
     <string name="wifi_direct_cancelled">Отменено</string>
     <string name="wifi_direct_timeout">Время ожидания второго устройства истекло</string>
     <string name="wifi_direct_channel_name">Передача по Wi-Fi Direct</string>
-    <string name="paste_here_copy">Вставить сюда (Скопировать)</string>
+    <string name="paste_here_copy">Вставить сюда</string>
     <string name="copy_to_clipboard">Копировать во внутренний буфер</string>
     <string name="files_copied_to_clipboard">Файлы скопированы в буфер обмена</string>
     <string name="clipboard_empty">Буфер обмена файлами пуст</string>
