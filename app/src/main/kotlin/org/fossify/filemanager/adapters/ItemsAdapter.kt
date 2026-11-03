@@ -93,6 +93,7 @@ import org.fossify.commons.models.FileDirItem
 import org.fossify.commons.models.RadioItem
 import org.fossify.commons.views.MyRecyclerView
 import org.fossify.filemanager.R
+import org.fossify.filemanager.activities.MainActivity
 import org.fossify.filemanager.activities.ReadTextActivity
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.activities.SplashActivity
@@ -639,6 +640,24 @@ class ItemsAdapter(
         } else {
             paths.add(path)
         }
+    }
+
+    fun copySelectionToInternalClipboard() {
+        val files = getSelectedFileDirItems()
+        android.util.Log.d("FileManagerPaste", "File menu copy-to-clipboard selected=${files.size}, paths=${files.joinToString(limit = 10) { it.path }}")
+        if (files.isEmpty()) {
+            activity.toast(R.string.select_items_first)
+            return
+        }
+
+        val mainActivity = activity as? MainActivity
+        if (mainActivity == null) {
+            android.util.Log.e("FileManagerPaste", "Cannot fill internal clipboard: activity is not MainActivity")
+            return
+        }
+
+        mainActivity.setPendingCopyItems(ArrayList(files))
+        finishActMode()
     }
 
     private fun copyPath() {

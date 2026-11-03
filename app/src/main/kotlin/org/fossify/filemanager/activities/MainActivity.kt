@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
@@ -53,6 +54,7 @@ import org.fossify.commons.helpers.TAB_RECENT_FILES
 import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
 import org.fossify.commons.helpers.VIEW_TYPE_GRID
 import org.fossify.commons.helpers.ensureBackgroundThread
+import org.fossify.commons.models.FileDirItem
 import org.fossify.commons.models.FAQItem
 import org.fossify.commons.models.RadioItem
 import org.fossify.commons.models.Release
@@ -78,6 +80,9 @@ class MainActivity : SimpleActivity() {
     override var isSearchBarEnabled = true
     
     companion object {
+        @JvmField
+        var pendingCopyItems = ArrayList<FileDirItem>()
+
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
     }
@@ -1055,6 +1060,13 @@ class MainActivity : SimpleActivity() {
             setResult(Activity.RESULT_OK, this)
         }
         finish()
+    }
+
+    fun setPendingCopyItems(items: ArrayList<FileDirItem>) {
+        Log.d("FileManagerPaste", "Setting internal file clipboard: count=${items.size}, paths=${items.joinToString(limit = 10) { it.path }}")
+        pendingCopyItems = ArrayList(items)
+        Log.d("FileManagerPaste", "Internal file clipboard updated: count=${pendingCopyItems.size}")
+        toast(R.string.files_copied_to_clipboard)
     }
 
     fun openedDirectory() {
