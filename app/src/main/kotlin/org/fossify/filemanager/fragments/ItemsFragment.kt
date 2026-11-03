@@ -586,7 +586,9 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             return
         }
 
-        val source = filesToCopy.first().path.getParentPath()
+        // Use the same source-path resolution as the regular "Copy to" action.
+        val firstFile = filesToCopy.first()
+        val source = firstFile.getParentPath()
         if (source == destination) {
             Log.w(PASTE_LOG_TAG, "Paste aborted: source and destination are identical: $source")
             mainActivity.toast(R.string.source_and_destination_same)
@@ -594,8 +596,9 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
         }
 
         mainActivity.config.lastCopyPath = destination
-        val useRootHelpers = mainActivity.isPathOnRoot(destination) || filesToCopy.any { mainActivity.isPathOnRoot(it.path) }
+        val useRootHelpers = mainActivity.isPathOnRoot(destination) || mainActivity.isPathOnRoot(firstFile.path)
         Log.d(PASTE_LOG_TAG, "Paste route selected: ${if (useRootHelpers) "RootHelpers" else "SAF-aware copyMoveFilesTo"}, source=$source, destination=$destination")
+        mainActivity.toast(R.string.copying)
 
         if (useRootHelpers) {
             val expectedCount = filesToCopy.size
@@ -637,7 +640,10 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                     copyHidden = mainActivity.config.shouldShowHidden()
                 ) {
                     Log.d(PASTE_LOG_TAG, "SAF-aware copy callback received: destination=$destination")
-                    mainActivity.runOnUiThread { refreshFragment() }
+                    mainActivity.runOnUiThread {
+                        mainActivity.toast(R.string.copying_success)
+                        refreshFragment()
+                    }
                 }
             } catch (exception: Throwable) {
                 Log.e(PASTE_LOG_TAG, "SAF-aware copy failed to start: source=$source, destination=$destination", exception)
