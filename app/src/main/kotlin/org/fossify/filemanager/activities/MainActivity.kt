@@ -55,6 +55,8 @@ import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
 import org.fossify.commons.helpers.VIEW_TYPE_GRID
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.models.FileDirItem
+import org.json.JSONArray
+import org.json.JSONObject
 import org.fossify.commons.models.FAQItem
 import org.fossify.commons.models.RadioItem
 import org.fossify.commons.models.Release
@@ -85,6 +87,8 @@ class MainActivity : SimpleActivity() {
 
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
+        private const val FILE_CLIPBOARD_PREFS = "internal_file_clipboard"
+        private const val FILE_CLIPBOARD_KEY = "pending_copy_items"
     }
 
     // Bar colors follow the light/dark switch (see TcTheme).
@@ -104,6 +108,7 @@ class MainActivity : SimpleActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        restorePendingCopyItems()
         window.statusBarColor = STATUS_BAR_COLOR
         window.navigationBarColor = NAV_BAR_COLOR
         androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
@@ -1062,10 +1067,60 @@ class MainActivity : SimpleActivity() {
         finish()
     }
 
+    private fun restorePendingCopyItems() {
+        val storedClipboard = getSharedPreferences(FILE_CLIPBOARD_PREFS, MODE_PRIVATE)
+            .getString(FILE_CLIPBOARD_KEY, null) ?: return
+
+        try {
+            val json = JSONArray(storedClipboard)
+            val restoredItems = ArrayList<FileDirItem>(json.length())
+            for (index in 0 until json.length()) {
+                val item = json.optJSONObject(index) ?: continue
+                val path = item.optString("path").takeIf { it.isNotBlank() } ?: continue
+                restoredItems.add(
+                    FileDirItem(
+                        path = path,
+                        name = item.optString("name", File(path).name),
+                        isDirectory = item.optBoolean("isDirectory", false),
+                        children = item.optInt("children", 0),
+                        size = item.optLong("size", 0L),
+                        modified = item.optLong("modified", 0L),
+                        mediaStoreId = item.optLong("mediaStoreId", 0L)
+                    )
+                )
+            }
+            pendingCopyItems = restoredItems
+            Log.d("FileManagerPaste", "Restored internal file clipboard: count=${restoredItems.size}, paths=${restoredItems.joinToString(limit = 10) { it.path }}")
+        } catch (exception: Exception) {
+            Log.e("FileManagerPaste", "Could not restore internal file clipboard", exception)
+            pendingCopyItems.clear()
+        }
+    }
+
     fun setPendingCopyItems(items: ArrayList<FileDirItem>) {
         Log.d("FileManagerPaste", "Setting internal file clipboard: count=${items.size}, paths=${items.joinToString(limit = 10) { it.path }}")
         pendingCopyItems = ArrayList(items)
-        Log.d("FileManagerPaste", "Internal file clipboard updated: count=${pendingCopyItems.size}")
+
+        val json = JSONArray()
+        pendingCopyItems.forEach { file ->
+            json.put(
+                JSONObject().apply {
+                    put("path", file.path)
+                    put("name", file.name)
+                    put("isDirectory", file.isDirectory)
+                    put("children", file.children)
+                    put("size", file.size)
+                    put("modified", file.modified)
+                    put("mediaStoreId", file.mediaStoreId)
+                }
+            )
+        }
+        getSharedPreferences(FILE_CLIPBOARD_PREFS, MODE_PRIVATE)
+            .edit()
+            .putString(FILE_CLIPBOARD_KEY, json.toString())
+            .apply()
+
+        Log.d("FileManagerPaste", "Internal file clipboard persisted: count=${pendingCopyItems.size}")
         toast(R.string.files_copied_to_clipboard)
     }
 
