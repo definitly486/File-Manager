@@ -93,6 +93,7 @@ import org.fossify.commons.models.FileDirItem
 import org.fossify.commons.models.RadioItem
 import org.fossify.commons.views.MyRecyclerView
 import org.fossify.filemanager.R
+import org.fossify.filemanager.activities.MainActivity
 import org.fossify.filemanager.activities.ReadTextActivity
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.activities.SplashActivity
@@ -639,6 +640,17 @@ class ItemsAdapter(
         } else {
             paths.add(path)
         }
+    }
+
+    fun copySelectionToInternalClipboard() {
+        val files = getSelectedFileDirItems()
+        if (files.isEmpty()) {
+            activity.toast(R.string.select_items_first)
+            return
+        }
+
+        (activity as? MainActivity)?.setPendingCopyItems(files)
+        finishActMode()
     }
 
     private fun copyPath() {
