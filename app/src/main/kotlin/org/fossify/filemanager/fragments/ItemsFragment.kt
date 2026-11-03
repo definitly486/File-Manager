@@ -55,6 +55,11 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 breadcrumbs.listener = this@ItemsFragment
                 itemsSwipeRefresh.setOnRefreshListener { refreshFragment() }
                 parentDirHolder.setOnClickListener { goToParentFolder() }
+                parentDirHolder.isLongClickable = true
+                parentDirHolder.setOnLongClickListener {
+                    showPasteMenu()
+                    true
+                }
                 homeButton.setOnClickListener { goToHomeFolder() }
                 refreshButton.setOnClickListener { refreshFragment() }
                 setupBottomBar()
