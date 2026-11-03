@@ -119,7 +119,7 @@
     <string name="wifi_direct_cancelled">Cancelled</string>
     <string name="wifi_direct_timeout">Timed out waiting for the other device</string>
     <string name="wifi_direct_channel_name">Wi-Fi Direct transfers</string>
-    <string name="paste_here_copy">Paste here (Copy)</string>
+    <string name="paste_here_copy">Paste here</string>
     <string name="copy_to_clipboard">Copy to internal clipboard</string>
     <string name="files_copied_to_clipboard">Files copied to clipboard</string>
     <string name="clipboard_empty">The file clipboard is empty</string>
