@@ -545,36 +545,52 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
 
     private fun pasteClipboardHere() {
         val mainActivity = activity as? MainActivity ?: return
-        val files = MainActivity.pendingCopyItems
-        if (files.isEmpty()) {
+
+        // Work on a copy: RootHelpers.copyMoveFiles() removes processed entries
+        // from its list, so never pass the persistent clipboard list directly.
+        val filesToCopy = ArrayList(MainActivity.pendingCopyItems)
+        if (filesToCopy.isEmpty()) {
             mainActivity.toast(R.string.clipboard_empty)
             return
         }
 
-        if (currentPath == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+        val destination = currentPath
+        if (destination == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
             mainActivity.toast(R.string.paste_into_folder_only)
             return
         }
 
-        val source = files.first().path.getParentPath()
-        val destination = currentPath
+        val source = filesToCopy.first().path.getParentPath()
+        if (source == destination) {
+            mainActivity.toast(R.string.source_and_destination_same)
+            return
+        }
+
         mainActivity.config.lastCopyPath = destination
 
-        if (mainActivity.isPathOnRoot(destination) || files.any { mainActivity.isPathOnRoot(it.path) }) {
+        if (mainActivity.isPathOnRoot(destination) || filesToCopy.any { mainActivity.isPathOnRoot(it.path) }) {
+            val expectedCount = filesToCopy.size
             mainActivity.toast(R.string.copying)
             ensureBackgroundThread {
-                RootHelpers(mainActivity).copyMoveFiles(files, destination, true) { copiedCount ->
-                    when (copiedCount) {
-                        files.size -> mainActivity.toast(R.string.copying_success)
-                        0 -> mainActivity.toast(R.string.copy_failed)
-                        else -> mainActivity.toast(R.string.copying_success_partial)
+                RootHelpers(mainActivity).copyMoveFiles(
+                    ArrayList(filesToCopy),
+                    destination,
+                    true
+                ) { copiedCount ->
+                    mainActivity.runOnUiThread {
+                        when (copiedCount) {
+                            expectedCount -> mainActivity.toast(R.string.copying_success)
+                            0 -> mainActivity.toast(R.string.copy_failed)
+                            else -> mainActivity.toast(R.string.copying_success_partial)
+                        }
+                        refreshFragment()
                     }
-                    mainActivity.runOnUiThread { refreshFragment() }
                 }
             }
         } else {
+            // Use the same SAF-aware copy pipeline as the normal "Copy to" action.
             mainActivity.copyMoveFilesTo(
-                fileDirItems = files,
+                fileDirItems = ArrayList(filesToCopy),
                 source = source,
                 destination = destination,
                 isCopyOperation = true,
