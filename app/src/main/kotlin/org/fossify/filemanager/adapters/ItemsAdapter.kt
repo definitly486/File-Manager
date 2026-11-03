@@ -222,6 +222,7 @@ class ItemsAdapter(
             R.id.cab_open_as -> openAs()
             R.id.cab_edit_file -> editFile()
             R.id.cab_copy_to -> copyMoveTo(true)
+            R.id.cab_copy_to_clipboard -> copySelectionToInternalClipboard()
             R.id.cab_move_to -> tryMoveFiles()
             R.id.cab_compress -> compressSelection()
             R.id.cab_decompress -> decompressSelection()
