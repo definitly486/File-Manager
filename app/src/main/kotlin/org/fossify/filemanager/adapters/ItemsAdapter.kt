@@ -217,6 +217,7 @@ class ItemsAdapter(
             R.id.cab_unhide -> toggleFileVisibility(false)
             R.id.cab_create_shortcut -> createShortcut()
             R.id.cab_copy_path -> copyPath()
+            R.id.cab_copy_to_clipboard -> copySelectionToInternalClipboard()
             R.id.cab_set_as -> setAs()
             R.id.cab_open_with -> openWith()
             R.id.cab_open_as -> openAs()
@@ -644,12 +645,19 @@ class ItemsAdapter(
 
     fun copySelectionToInternalClipboard() {
         val files = getSelectedFileDirItems()
+        android.util.Log.d("FileManagerPaste", "File menu copy-to-clipboard selected=${files.size}, paths=${files.joinToString(limit = 10) { it.path }}")
         if (files.isEmpty()) {
             activity.toast(R.string.select_items_first)
             return
         }
 
-        (activity as? MainActivity)?.setPendingCopyItems(files)
+        val mainActivity = activity as? MainActivity
+        if (mainActivity == null) {
+            android.util.Log.e("FileManagerPaste", "Cannot fill internal clipboard: activity is not MainActivity")
+            return
+        }
+
+        mainActivity.setPendingCopyItems(ArrayList(files))
         finishActMode()
     }
 
