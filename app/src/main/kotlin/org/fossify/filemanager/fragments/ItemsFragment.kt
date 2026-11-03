@@ -508,7 +508,6 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     private fun setupSideButtons() {
         binding.apply {
             sideCopy.setOnClickListener { withSelection { copySelectionToInternalClipboard() } }
-            sidePaste.setOnClickListener { pasteClipboardHere() }
             sideMove.setOnClickListener { withSelection { performAction(R.id.cab_move_to) } }
             sideOpen.setOnClickListener {
                 val dir = getRecyclerAdapter()?.getSingleSelectedDirectory()
@@ -663,7 +662,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             itemsFab.backgroundTintList = ColorStateList.valueOf(org.fossify.filemanager.helpers.TcTheme.background(context!!))
             itemsHeader.setBackgroundColor(org.fossify.filemanager.helpers.TcTheme.background(context!!))
             itemsHeaderActions.setBackgroundColor(org.fossify.filemanager.helpers.TcTheme.background(context!!))
-            listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sidePaste, sideMove, sideOpen, sideSelectAll, sideInvert, sideUp)
+            listOf(barMenu, barNewFile, barNewFolder, barDelete, barSort, barSwap, sideCopy, sideMove, sideOpen, sideSelectAll, sideInvert, sideUp)
                 .forEach { it.setColorFilter(textColor) }
         }
     }
