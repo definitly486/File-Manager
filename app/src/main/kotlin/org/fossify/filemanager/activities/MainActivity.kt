@@ -53,6 +53,7 @@ import org.fossify.commons.helpers.TAB_RECENT_FILES
 import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
 import org.fossify.commons.helpers.VIEW_TYPE_GRID
 import org.fossify.commons.helpers.ensureBackgroundThread
+import org.fossify.commons.models.FileDirItem
 import org.fossify.commons.models.FAQItem
 import org.fossify.commons.models.RadioItem
 import org.fossify.commons.models.Release
@@ -78,6 +79,9 @@ class MainActivity : SimpleActivity() {
     override var isSearchBarEnabled = true
     
     companion object {
+        @JvmField
+        var pendingCopyItems = ArrayList<FileDirItem>()
+
         private const val BACK_PRESS_TIMEOUT = 5000
         private const val PICKED_PATH = "picked_path"
     }
@@ -1055,6 +1059,11 @@ class MainActivity : SimpleActivity() {
             setResult(Activity.RESULT_OK, this)
         }
         finish()
+    }
+
+    fun setPendingCopyItems(items: ArrayList<FileDirItem>) {
+        pendingCopyItems = ArrayList(items)
+        toast(R.string.files_copied_to_clipboard)
     }
 
     fun openedDirectory() {
