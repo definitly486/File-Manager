@@ -6,6 +6,8 @@ import android.content.res.ColorStateList
 import android.os.Parcelable
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.dialogs.StoragePickerDialog
@@ -29,6 +31,8 @@ import org.fossify.filemanager.interfaces.ItemOperationsListener
 import org.fossify.filemanager.models.ListItem
 import java.io.File
 import java.util.Locale
+
+private const val PASTE_LOG_TAG = "FileManagerPaste"
 
 class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment<MyViewPagerFragment.ItemsInnerBinding>(context, attributeSet),
     ItemOperationsListener,
@@ -57,7 +61,8 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 parentDirHolder.setOnClickListener { goToParentFolder() }
                 parentDirHolder.isLongClickable = true
                 parentDirHolder.setOnLongClickListener {
-                    showPasteMenu()
+                    Log.d(PASTE_LOG_TAG, "Header parent arrow long-click: path=$currentPath")
+                    showPasteMenu(parentDirHolder)
                     true
                 }
                 homeButton.setOnClickListener { goToHomeFolder() }
@@ -521,83 +526,123 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 }
             }
             sideUp.setOnLongClickListener {
-                showPasteMenu()
+                Log.d(PASTE_LOG_TAG, "Bottom side-up long-click: path=$currentPath")
+                showPasteMenu(sideUp)
                 true
             }
         }
     }
 
-    private fun showPasteMenu() {
-        val ctx = context ?: return
-        val popup = android.widget.PopupMenu(ctx, binding.sideUp)
+    private fun showPasteMenu(anchor: View) {
+        val ctx = context ?: run {
+            Log.w(PASTE_LOG_TAG, "Cannot show paste menu: context is null")
+            return
+        }
+
+        val clipboardCount = MainActivity.pendingCopyItems.size
+        Log.d(PASTE_LOG_TAG, "Showing paste menu: anchor=${anchor.resources.getResourceEntryName(anchor.id)}, path=$currentPath, clipboardCount=$clipboardCount")
+
+        val popup = android.widget.PopupMenu(ctx, anchor)
         val pasteItem = popup.menu.add(0, 1, 0, R.string.paste_here_copy)
-        pasteItem.isEnabled = MainActivity.pendingCopyItems.isNotEmpty()
+        pasteItem.isEnabled = clipboardCount > 0
         popup.setOnMenuItemClickListener { item ->
             if (item.itemId == 1) {
+                Log.d(PASTE_LOG_TAG, "Paste menu item clicked: path=$currentPath, clipboardCount=${MainActivity.pendingCopyItems.size}")
                 pasteClipboardHere()
                 true
             } else {
                 false
             }
         }
+        popup.setOnDismissListener {
+            Log.d(PASTE_LOG_TAG, "Paste menu dismissed: path=$currentPath")
+        }
         popup.show()
+        Log.d(PASTE_LOG_TAG, "Paste menu shown")
     }
 
     private fun pasteClipboardHere() {
-        val mainActivity = activity as? MainActivity ?: return
+        val mainActivity = activity as? MainActivity ?: run {
+            Log.e(PASTE_LOG_TAG, "Paste aborted: activity is not MainActivity (activity=${activity?.javaClass?.name})")
+            return
+        }
 
-        // Work on a copy: RootHelpers.copyMoveFiles() removes processed entries
-        // from its list, so never pass the persistent clipboard list directly.
         val filesToCopy = ArrayList(MainActivity.pendingCopyItems)
+        val destination = currentPath
+        Log.d(
+            PASTE_LOG_TAG,
+            "Paste started: clipboardCount=${filesToCopy.size}, destination=$destination, " +
+                "sources=${filesToCopy.joinToString(limit = 10) { it.path }}"
+        )
+
         if (filesToCopy.isEmpty()) {
+            Log.w(PASTE_LOG_TAG, "Paste aborted: clipboard is empty")
             mainActivity.toast(R.string.clipboard_empty)
             return
         }
 
-        val destination = currentPath
         if (destination == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+            Log.w(PASTE_LOG_TAG, "Paste aborted: destination is virtual home")
             mainActivity.toast(R.string.paste_into_folder_only)
             return
         }
 
         val source = filesToCopy.first().path.getParentPath()
         if (source == destination) {
+            Log.w(PASTE_LOG_TAG, "Paste aborted: source and destination are identical: $source")
             mainActivity.toast(R.string.source_and_destination_same)
             return
         }
 
         mainActivity.config.lastCopyPath = destination
+        val useRootHelpers = mainActivity.isPathOnRoot(destination) || filesToCopy.any { mainActivity.isPathOnRoot(it.path) }
+        Log.d(PASTE_LOG_TAG, "Paste route selected: ${if (useRootHelpers) "RootHelpers" else "SAF-aware copyMoveFilesTo"}, source=$source, destination=$destination")
 
-        if (mainActivity.isPathOnRoot(destination) || filesToCopy.any { mainActivity.isPathOnRoot(it.path) }) {
+        if (useRootHelpers) {
             val expectedCount = filesToCopy.size
             mainActivity.toast(R.string.copying)
             ensureBackgroundThread {
-                RootHelpers(mainActivity).copyMoveFiles(
-                    ArrayList(filesToCopy),
-                    destination,
-                    true
-                ) { copiedCount ->
-                    mainActivity.runOnUiThread {
-                        when (copiedCount) {
-                            expectedCount -> mainActivity.toast(R.string.copying_success)
-                            0 -> mainActivity.toast(R.string.copy_failed)
-                            else -> mainActivity.toast(R.string.copying_success_partial)
+                try {
+                    Log.d(PASTE_LOG_TAG, "RootHelpers copy started: count=$expectedCount, destination=$destination")
+                    RootHelpers(mainActivity).copyMoveFiles(
+                        ArrayList(filesToCopy),
+                        destination,
+                        true
+                    ) { copiedCount ->
+                        Log.d(PASTE_LOG_TAG, "RootHelpers callback: copiedCount=$copiedCount, expectedCount=$expectedCount")
+                        mainActivity.runOnUiThread {
+                            when (copiedCount) {
+                                expectedCount -> mainActivity.toast(R.string.copying_success)
+                                0 -> mainActivity.toast(R.string.copy_failed)
+                                else -> mainActivity.toast(R.string.copying_success_partial)
+                            }
+                            refreshFragment()
                         }
-                        refreshFragment()
+                    }
+                } catch (exception: Throwable) {
+                    Log.e(PASTE_LOG_TAG, "RootHelpers copy failed: destination=$destination", exception)
+                    mainActivity.runOnUiThread {
+                        mainActivity.toast(R.string.copy_failed)
                     }
                 }
             }
         } else {
-            // Use the same SAF-aware copy pipeline as the normal "Copy to" action.
-            mainActivity.copyMoveFilesTo(
-                fileDirItems = ArrayList(filesToCopy),
-                source = source,
-                destination = destination,
-                isCopyOperation = true,
-                copyPhotoVideoOnly = false,
-                copyHidden = mainActivity.config.shouldShowHidden()
-            ) {
-                mainActivity.runOnUiThread { refreshFragment() }
+            try {
+                Log.d(PASTE_LOG_TAG, "SAF-aware copy started: count=${filesToCopy.size}, source=$source, destination=$destination")
+                mainActivity.copyMoveFilesTo(
+                    fileDirItems = ArrayList(filesToCopy),
+                    source = source,
+                    destination = destination,
+                    isCopyOperation = true,
+                    copyPhotoVideoOnly = false,
+                    copyHidden = mainActivity.config.shouldShowHidden()
+                ) {
+                    Log.d(PASTE_LOG_TAG, "SAF-aware copy callback received: destination=$destination")
+                    mainActivity.runOnUiThread { refreshFragment() }
+                }
+            } catch (exception: Throwable) {
+                Log.e(PASTE_LOG_TAG, "SAF-aware copy failed to start: source=$source, destination=$destination", exception)
+                mainActivity.toast(R.string.copy_failed)
             }
         }
     }
