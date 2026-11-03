@@ -497,7 +497,7 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
 
     private fun setupSideButtons() {
         binding.apply {
-            sideCopy.setOnClickListener { withSelection { performAction(R.id.cab_copy_to) } }
+            sideCopy.setOnClickListener { withSelection { copySelectionToInternalClipboard() } }
             sideMove.setOnClickListener { withSelection { performAction(R.id.cab_move_to) } }
             sideOpen.setOnClickListener {
                 val dir = getRecyclerAdapter()?.getSingleSelectedDirectory()
@@ -514,6 +514,69 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                 if (currentPath != org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
                     goToParentFolder()
                 }
+            }
+            sideUp.setOnLongClickListener {
+                showPasteMenu()
+                true
+            }
+        }
+    }
+
+    private fun showPasteMenu() {
+        val ctx = context ?: return
+        val popup = android.widget.PopupMenu(ctx, binding.sideUp)
+        val pasteItem = popup.menu.add(0, 1, 0, R.string.paste_here_copy)
+        pasteItem.isEnabled = MainActivity.pendingCopyItems.isNotEmpty()
+        popup.setOnMenuItemClickListener { item ->
+            if (item.itemId == 1) {
+                pasteClipboardHere()
+                true
+            } else {
+                false
+            }
+        }
+        popup.show()
+    }
+
+    private fun pasteClipboardHere() {
+        val mainActivity = activity as? MainActivity ?: return
+        val files = MainActivity.pendingCopyItems
+        if (files.isEmpty()) {
+            mainActivity.toast(R.string.clipboard_empty)
+            return
+        }
+
+        if (currentPath == org.fossify.filemanager.helpers.HOME_SCREEN_PATH) {
+            mainActivity.toast(R.string.paste_into_folder_only)
+            return
+        }
+
+        val source = files.first().path.getParentPath()
+        val destination = currentPath
+        mainActivity.config.lastCopyPath = destination
+
+        if (mainActivity.isPathOnRoot(destination) || files.any { mainActivity.isPathOnRoot(it.path) }) {
+            mainActivity.toast(R.string.copying)
+            ensureBackgroundThread {
+                RootHelpers(mainActivity).copyMoveFiles(files, destination, true) { copiedCount ->
+                    when (copiedCount) {
+                        files.size -> mainActivity.toast(R.string.copying_success)
+                        0 -> mainActivity.toast(R.string.copy_failed)
+                        else -> mainActivity.toast(R.string.copying_success_partial)
+                    }
+                    mainActivity.runOnUiThread { refreshFragment() }
+                }
+            }
+        } else {
+            mainActivity.copyMoveFilesTo(
+                fileDirItems = files,
+                source = source,
+                destination = destination,
+                isCopyOperation = true,
+                copyPhotoVideoOnly = false,
+                copyHidden = mainActivity.config.shouldShowHidden()
+            ) {
+                mainActivity.runOnUiThread { refreshFragment() }
             }
         }
     }
