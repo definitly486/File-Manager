@@ -146,7 +146,7 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/copy_to_clipboard"
                         android:padding="10dp"
-                        android:src="@drawable/ic_side_copy_vector" />
+                        android:src="@drawable/ic_side_arrow_vector" />
 
                     <ImageView
                         android:id="@+id/side_copy_to"
