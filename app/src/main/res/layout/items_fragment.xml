@@ -149,13 +149,13 @@
                         android:src="@drawable/ic_side_arrow_vector" />
 
                     <ImageView
-                        android:id="@+id/side_copy_to"
+                        android:id="@+id/side_paste"
                         android:layout_width="44dp"
                         android:layout_height="48dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/copy_to"
+                        android:contentDescription="@string/paste_here_copy"
                         android:padding="10dp"
-                        android:src="@drawable/ic_side_copy_vector" />
+                        android:src="@drawable/ic_arrow_down_vector" />
                 </LinearLayout>
 
                 <ImageView
