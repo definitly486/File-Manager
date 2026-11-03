@@ -602,7 +602,6 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
 
         if (useRootHelpers) {
             val expectedCount = filesToCopy.size
-            mainActivity.toast(R.string.copying)
             ensureBackgroundThread {
                 try {
                     Log.d(PASTE_LOG_TAG, "RootHelpers copy started: count=$expectedCount, destination=$destination")
